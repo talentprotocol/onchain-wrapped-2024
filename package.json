@@ -13,7 +13,8 @@
     "@supabase/supabase-js": "^2.47.6",
     "next": "15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "rollbar": "^2.26.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
