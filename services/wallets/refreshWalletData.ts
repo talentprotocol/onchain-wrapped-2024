@@ -24,6 +24,8 @@ export async function refreshWalletData(wallet: string) {
   if (error) {
     rollbarError("Unable to update wallets data", error);
   }
+
+  return { walletYearPnL, walletYearTransactions };
 }
 
 async function getWalletPnL(wallet: string) {

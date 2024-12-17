@@ -37,7 +37,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
     .select()
     .maybeSingle();
 
-  upsertUserWallets(data.id, onchainWrapped.wallets);
+  upsertUserWallets(createUserData.id, onchainWrapped.wallets);
 
   if (createUserError) {
     throw createUserError;
