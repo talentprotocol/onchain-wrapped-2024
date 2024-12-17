@@ -4,6 +4,7 @@ export interface UserModel {
   id: number;
   talent_id: number;
   builder_score: number;
+  github_contributions: number;
   ens: string;
   calculated_at: Date | undefined;
   onchain_since: Date | undefined;
