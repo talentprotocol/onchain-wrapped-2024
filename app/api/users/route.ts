@@ -1,20 +1,33 @@
+import { refreshToken } from "@/services/users/refreshToken";
+import { refreshUserWalletsData } from "@/services/users/refreshUserWalletsData";
 import { upsertUserFromAuthToken } from "@/services/users/upsert";
 import { rollbarError } from "@/utils/rollbar/log";
-import { type NextRequest, NextResponse } from "next/server";
+import { waitUntil } from "@vercel/functions";
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
-  const body = await request.json();
+export async function POST() {
+  const authorization = (await headers()).get("authorization");
 
-  const authToken = body.authToken;
+  const authToken = authorization?.replace("Bearer ", "");
+
   if (!authToken) {
-    return NextResponse.json({ error: "Auth Token is required to create a new user" }, { status: 400 });
+    return NextResponse.json({ error: "Auth Token is required to access the API" }, { status: 400 });
   }
 
   try {
-    await upsertUserFromAuthToken(authToken);
+    const refreshTokenResponse = await refreshToken(authToken);
+    const user = await upsertUserFromAuthToken(refreshTokenResponse.token);
+
+    waitUntil(refreshUserWalletsData(user.id));
+
+    return NextResponse.json({
+      user,
+      authToken: { expires_at: refreshTokenResponse.expiresAt, token: refreshTokenResponse.token }
+    });
   } catch (e) {
     const error = e as Error;
     rollbarError("Unable to upsert user", error);
-    return NextResponse.json({ error: error.message });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

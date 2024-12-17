@@ -11,10 +11,12 @@
   "dependencies": {
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.6",
+    "@vercel/functions": "^1.5.2",
     "next": "15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "rollbar": "^2.26.4"
+    "rollbar": "^2.26.4",
+    "vercel": "^39.2.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
