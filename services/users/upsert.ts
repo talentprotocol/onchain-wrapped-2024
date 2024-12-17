@@ -15,7 +15,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
     .maybeSingle();
 
   if (getUserError) {
-    throw "Unable to fetch users from supabase";
+    throw getUserError;
   }
 
   if (data) {
@@ -29,6 +29,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
       builder_score: onchainWrapped.score,
       onchain_since: onchainWrapped.onchain_since,
       credentials_count: onchainWrapped.credentials_count,
+      github_contributions: onchainWrapped.github_contributions,
       ens: onchainWrapped.ens,
       base_testnet_contracts_deployed: onchainWrapped.base_testnet_contracts_deployed,
       base_mainnet_contracts_deployed: onchainWrapped.base_mainnet_contracts_deployed
@@ -39,7 +40,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
   upsertUserWallets(data.id, onchainWrapped.wallets);
 
   if (createUserError) {
-    throw "Unable to create user";
+    throw createUserError;
   }
 
   return serializeUser(createUserData);
@@ -52,7 +53,7 @@ function upsertUserWallets(userId: number, wallets: string[]) {
       .upsert({ user_id: userId, address: wallet }, { onConflict: "address" });
 
     if (error) {
-      throw "Unable to upsert wallet";
+      throw error;
     }
   });
 }
@@ -64,6 +65,7 @@ function serializeUser(data: UserModel) {
     talentId: data.talent_id,
     calculatedAt: data.calculated_at,
     onchainSince: data.onchain_since,
+    githubContributions: data.github_contributions,
     ens: data.ens,
     baseTestnetContractsDeployed: data.base_testnet_contracts_deployed,
     baseMainnetContractsDeployed: data.base_mainnet_contracts_deployed,
