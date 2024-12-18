@@ -12,7 +12,14 @@ export async function refreshUserWalletsData(userId: number) {
     return;
   }
 
-  data.forEach(async wallet => await refreshWalletData(wallet.address));
+  let walletsYearPnL = 0;
+  let walletsYearTransactions = 0;
+
+  for (const wallet of data) {
+    const walletsData = await refreshWalletData(wallet.address);
+    walletsYearPnL += walletsData.walletYearPnL;
+    walletsYearTransactions += walletsData.walletYearTransactions;
+  }
 
   const currentDate = new Date();
 
@@ -21,6 +28,8 @@ export async function refreshUserWalletsData(userId: number) {
     .update({
       loading_wallets_pnl: false,
       loading_wallets_transactions: false,
+      year_pnl: walletsYearPnL,
+      year_transactions: walletsYearTransactions,
       pnl_calculated_at: currentDate,
       transactions_calculated_at: currentDate
     })
