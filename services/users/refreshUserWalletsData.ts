@@ -14,11 +14,15 @@ export async function refreshUserWalletsData(userId: number) {
 
   let walletsYearPnL = 0;
   let walletsYearTransactions = 0;
+  let walletsZoraPosts = 0;
+  let walletsZoraMints = 0;
 
   for (const wallet of data) {
     const walletsData = await refreshWalletData(wallet.address);
     walletsYearPnL += walletsData.walletYearPnL;
     walletsYearTransactions += walletsData.walletYearTransactions;
+    walletsZoraPosts += walletsData.zoraPosts;
+    walletsZoraMints += walletsData.zoraMints;
   }
 
   const currentDate = new Date();
@@ -28,10 +32,14 @@ export async function refreshUserWalletsData(userId: number) {
     .update({
       loading_wallets_pnl: false,
       loading_wallets_transactions: false,
+      loading_wallets_zora: false,
       year_pnl: walletsYearPnL,
       year_transactions: walletsYearTransactions,
+      year_zora_posts: walletsZoraPosts,
+      year_zora_mints: walletsZoraMints,
       pnl_calculated_at: currentDate,
-      transactions_calculated_at: currentDate
+      transactions_calculated_at: currentDate,
+      zora_calculated_at: currentDate
     })
     .eq("id", userId);
 

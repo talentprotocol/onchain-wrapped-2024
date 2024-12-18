@@ -70,6 +70,7 @@ function serializeUser(data: UserModel) {
     baseTestnetContractsDeployed: data.base_testnet_contracts_deployed,
     baseMainnetContractsDeployed: data.base_mainnet_contracts_deployed,
     loadingWalletsPnl: data.loading_wallets_pnl,
-    loadingWalletsTransactions: data.loading_wallets_transactions
+    loadingWalletsTransactions: data.loading_wallets_transactions,
+    loadingWalletsZora: data.loading_wallets_zora
   };
 }

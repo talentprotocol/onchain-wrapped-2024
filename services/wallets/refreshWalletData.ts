@@ -1,6 +1,7 @@
 import { rollbarError } from "@/utils/rollbar/log";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { getWalletChart, getWalletTransactions } from "@/utils/zerion/client";
+import { getWalletPostsAndMints } from "@/utils/zora/client";
 
 const supabase = await createSupabaseServerClient();
 
@@ -12,12 +13,15 @@ const CURRENCY = "usd";
 export async function refreshWalletData(wallet: string) {
   const walletYearPnL = await getWalletPnL(wallet);
   const walletYearTransactions = await getWalletTransactionsCount(wallet);
+  const { zoraPosts, zoraMints } = await getWalletZoraPostsAndMints(wallet);
 
   const { error } = await supabase
     .from("wallets")
     .update({
       year_pnl: walletYearPnL,
-      year_transactions: walletYearTransactions
+      year_transactions: walletYearTransactions,
+      zora_posts: zoraPosts,
+      zora_mints: zoraMints
     })
     .eq("address", wallet);
 
@@ -25,7 +29,7 @@ export async function refreshWalletData(wallet: string) {
     rollbarError("Unable to update wallets data", error);
   }
 
-  return { walletYearPnL, walletYearTransactions };
+  return { walletYearPnL, walletYearTransactions, zoraPosts, zoraMints };
 }
 
 async function getWalletPnL(wallet: string) {
@@ -54,4 +58,35 @@ async function getWalletTransactionsCount(wallet: string) {
   } while (nextPageUrl);
 
   return transactionsCount;
+}
+
+async function getWalletZoraPostsAndMints(wallet: string) {
+  let zoraPosts = 0;
+  let zoraMints = 0;
+  let postsCursor = "";
+  let mintsCursor = "";
+  let postsNextPage;
+  let mintsNextPage;
+
+  do {
+    const walletPostsAndMintsResponse = await getWalletPostsAndMints(wallet, mintsCursor, postsCursor);
+
+    const profile = walletPostsAndMintsResponse?.data?.profile;
+    const postsCollections = profile?.createdCollectionsOrTokens;
+    const mintsCollections = profile?.collectedCollectionsOrTokens;
+
+    if (postsCursor != postsCollections?.pageInfo?.endCursor) {
+      zoraPosts += postsCollections?.edges?.length || 0;
+    }
+    if (mintsCursor != mintsCollections?.pageInfo?.endCursor) {
+      zoraMints += mintsCollections?.edges?.length || 0;
+    }
+
+    postsCursor = postsCollections?.pageInfo?.endCursor;
+    mintsCursor = mintsCollections?.pageInfo?.endCursor;
+    postsNextPage = postsCollections?.pageInfo?.hasNextPage;
+    mintsNextPage = mintsCollections?.pageInfo?.hasNextPage;
+  } while (postsNextPage || mintsNextPage);
+
+  return { zoraPosts, zoraMints };
 }
