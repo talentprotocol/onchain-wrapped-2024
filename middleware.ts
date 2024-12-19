@@ -1,8 +1,15 @@
 import * as jose from "jose";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware() {
+const protectedRoutes = ["/api"];
+
+export async function middleware(req: NextRequest) {
+  const path = req.nextUrl.pathname;
+  const isProtectedRoute = protectedRoutes.includes(path);
+  if (!isProtectedRoute) {
+    return NextResponse.next();
+  }
   const authorization = (await headers()).get("authorization");
 
   const authToken = authorization?.replace("Bearer ", "");
