@@ -6,6 +6,8 @@ import { waitUntil } from "@vercel/functions";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+export const maxDuration = 300;
+
 export async function POST() {
   const authorization = (await headers()).get("authorization");
 
