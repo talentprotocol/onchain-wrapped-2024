@@ -13,4 +13,5 @@ export interface UserModel {
   base_mainnet_contracts_deployed: number;
   loading_wallets_pnl: boolean;
   loading_wallets_transactions: boolean;
+  loading_wallets_zora: boolean;
 }
