@@ -8,7 +8,7 @@ import { Button } from "@/app/components/atoms";
 
 import "./globals.css";
 
-const dmMono = DM_Mono({ weight: ["500"] });
+const dmMono = DM_Mono({ weight: ["500"], preload: false });
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
