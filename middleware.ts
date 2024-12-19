@@ -2,7 +2,7 @@ import * as jose from "jose";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/api"];
+const protectedRoutes = ["/api/users"];
 
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;

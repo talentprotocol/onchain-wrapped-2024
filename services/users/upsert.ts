@@ -1,6 +1,6 @@
-import { UserModel } from "@/models/user.model";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { getTalentOnchainWrapped } from "@/utils/talent_protocol/client";
+import { serializeUser } from "./serializeUser";
 
 const supabase = await createSupabaseServerClient();
 
@@ -56,21 +56,4 @@ function upsertUserWallets(userId: number, wallets: string[]) {
       throw error;
     }
   });
-}
-
-function serializeUser(data: UserModel) {
-  return {
-    id: data.id,
-    builderScore: data.builder_score,
-    talentId: data.talent_id,
-    calculatedAt: data.calculated_at,
-    onchainSince: data.onchain_since,
-    githubContributions: data.github_contributions,
-    ens: data.ens,
-    baseTestnetContractsDeployed: data.base_testnet_contracts_deployed,
-    baseMainnetContractsDeployed: data.base_mainnet_contracts_deployed,
-    loadingWalletsPnl: data.loading_wallets_pnl,
-    loadingWalletsTransactions: data.loading_wallets_transactions,
-    loadingWalletsZora: data.loading_wallets_zora
-  };
 }
