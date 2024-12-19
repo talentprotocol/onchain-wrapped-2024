@@ -19,8 +19,7 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    const jwtSecret = atob(process.env.NEXT_JWT_SECRET!);
-    const publicKey = await jose.importSPKI(jwtSecret, "RS256");
+    const publicKey = await jose.importSPKI(process.env.NEXT_JWT_SECRET!, "RS256");
 
     await jose.jwtVerify(authToken, publicKey);
   } catch (err) {
