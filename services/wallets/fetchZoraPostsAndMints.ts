@@ -11,9 +11,10 @@ export async function fetchZoraPostsAndMints(wallet: string) {
   let mintsCursor = "";
   let postsNextPage;
   let mintsNextPage;
+  let walletPostsAndMintsResponse;
 
   do {
-    const walletPostsAndMintsResponse = await getWalletPostsAndMints(wallet, mintsCursor, postsCursor);
+    walletPostsAndMintsResponse = await getWalletPostsAndMints(wallet, postsCursor, mintsCursor);
 
     const profile = walletPostsAndMintsResponse?.data?.profile;
     const postsCollections = profile?.createdCollectionsOrTokens;
