@@ -31,7 +31,7 @@ export default function Page() {
       }
 
       saveToken(token);
-      router.push(`/loading_wrapped/${data.user.talentId}`);
+      router.push(`/loading_wrapped/${data.user.talent_id}`);
 
       return token;
     },

@@ -49,18 +49,40 @@ async function fetchPNL(userId: number, wallets: WalletAddress[]) {
 }
 
 async function fetchTransactions(userId: number, wallets: WalletAddress[]) {
-  let walletsYearTransactions = 0;
+  let walletsTransactionsCount = 0;
+  let walletsEthereumTransactionsCount = 0;
+  let walletsBaseTransactionsCount = 0;
+  let walletsOptimismTransactionsCount = 0;
+  let walletsArbitrumTransactionsCount = 0;
+  let walletsBscTransactionsCount = 0;
 
   for (const wallet of wallets) {
-    const walletTransactions = await getWalletTransactionsCount(wallet.address);
-    walletsYearTransactions += walletTransactions;
+    const {
+      transactionsCount,
+      ethereumTransactionsCount,
+      baseTransactionsCount,
+      optimismTransactionsCount,
+      bscTransactionsCount,
+      arbitrumTransactionsCount
+    } = await getWalletTransactionsCount(wallet.address);
+    walletsTransactionsCount += transactionsCount;
+    walletsEthereumTransactionsCount += ethereumTransactionsCount;
+    walletsBaseTransactionsCount += baseTransactionsCount;
+    walletsOptimismTransactionsCount += optimismTransactionsCount;
+    walletsArbitrumTransactionsCount += arbitrumTransactionsCount;
+    walletsBscTransactionsCount += bscTransactionsCount;
   }
 
   const { error } = await supabase
     .from("users")
     .update({
       loading_wallets_transactions: false,
-      year_transactions: walletsYearTransactions,
+      year_transactions: walletsTransactionsCount,
+      year_bsc_transactions: walletsBscTransactionsCount,
+      year_base_transactions: walletsBaseTransactionsCount,
+      year_ethereum_transactions: walletsEthereumTransactionsCount,
+      year_optimism_transactions: walletsOptimismTransactionsCount,
+      year_arbitrum_transactions: walletsArbitrumTransactionsCount,
       transactions_calculated_at: new Date()
     })
     .eq("id", userId);
