@@ -4,6 +4,7 @@ export function serializeUser(user: UserModel) {
   return {
     id: user.id,
     builderScore: user.builder_score,
+    credentialsCount: user.credentials_count,
     talentId: user.talent_id,
     calculatedAt: user.calculated_at,
     onchainSince: user.onchain_since,
