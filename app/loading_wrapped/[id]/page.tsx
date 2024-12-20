@@ -1,6 +1,6 @@
 "use client";
 
-import { UserClientModel } from "@/models/user.model";
+import { UserModel } from "@/models/user.model";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { usePageVisibility } from "../../hooks/useVisibility";
@@ -10,11 +10,12 @@ export default function Page() {
   const router = useRouter();
   const timerIdRef = useRef<ReturnType<typeof setTimeout>>(null);
   const [isPollingEnabled, setIsPollingEnabled] = useState(true);
-  const [user, setUser] = useState<UserClientModel>();
+  const [user, setUser] = useState<UserModel>();
   const params = useParams();
   const talentId = params.id;
 
-  const loadingData = !user || user.loadingWalletsPnl || user.loadingWalletsTransactions || user.loadingWalletsZora;
+  const loadingData =
+    !user || user.loading_wallets_pnl || user.loading_wallets_transactions || user.loading_wallets_zora;
 
   const fetchUser = async () => {
     const result = await fetch(`/api/users/${talentId}`, {
@@ -89,45 +90,70 @@ export default function Page() {
       </div>
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>Builder Score</h3>
-        <p>{user?.builderScore}</p>
+        <p>{user?.builder_score}</p>
       </div>
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>Credentials</h3>
-        <p>{user?.credentialsCount}</p>
+        <p>{user?.credentials_count}</p>
       </div>
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>2024 Github Contributions</h3>
-        <p>{user?.githubContributions}</p>
+        <p>{user?.github_contributions}</p>
       </div>
 
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>2024 Base Mainnet deployed contracts</h3>
-        <p>{user?.baseMainnetContractsDeployed}</p>
+        <p>{user?.base_mainnet_contracts_deployed}</p>
       </div>
 
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>2024 Base Testnet deployed contracts</h3>
-        <p>{user?.baseTestnetContractsDeployed}</p>
+        <p>{user?.base_testnet_contracts_deployed}</p>
       </div>
 
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>2024 Transactions</h3>
-        <p>{user?.yearTransactions}</p>
+        <p>{user?.year_transactions}</p>
+      </div>
+
+      <div className="flex flex-row  gap-1 place-content-between">
+        <h3>2024 Base Transactions</h3>
+        <p>{user?.year_base_transactions}</p>
+      </div>
+
+      <div className="flex flex-row  gap-1 place-content-between">
+        <h3>2024 Ethereum Transactions</h3>
+        <p>{user?.year_ethereum_transactions}</p>
+      </div>
+
+      <div className="flex flex-row  gap-1 place-content-between">
+        <h3>2024 Optimism Transactions</h3>
+        <p>{user?.year_optimism_transactions}</p>
+      </div>
+
+      <div className="flex flex-row  gap-1 place-content-between">
+        <h3>2024 Arbitrum Transactions</h3>
+        <p>{user?.year_arbitrum_transactions}</p>
+      </div>
+
+      <div className="flex flex-row  gap-1 place-content-between">
+        <h3>2024 Binance Smart Chain Transactions</h3>
+        <p>{user?.year_bsc_transactions}</p>
       </div>
 
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>2024 PnL</h3>
-        <p>{user?.yearPnL?.toFixed(2)}</p>
+        <p>{user?.year_pnl?.toFixed(2)}</p>
       </div>
 
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>2024 Zora mints</h3>
-        <p>{user?.yearZoraMints}</p>
+        <p>{user?.year_zora_mints}</p>
       </div>
 
       <div className="flex flex-row  gap-1 place-content-between">
         <h3>2024 Zora posts</h3>
-        <p>{user?.yearZoraPosts}</p>
+        <p>{user?.year_zora_posts}</p>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { getTalentOnchainWrapped } from "@/utils/talent_protocol/client";
-import { serializeUser } from "./serializeUser";
 
 const supabase = await createSupabaseServerClient();
 
@@ -8,7 +7,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
   const talentResponseBody = await getTalentOnchainWrapped(authToken);
   const onchainWrapped = talentResponseBody.onchain_wrapped;
 
-  const { data, error: getUserError } = await supabase
+  const { data: user, error: getUserError } = await supabase
     .from("users")
     .select()
     .eq("talent_id", onchainWrapped.id)
@@ -18,11 +17,11 @@ export async function upsertUserFromAuthToken(authToken: string) {
     throw getUserError;
   }
 
-  if (data) {
-    upsertUserWallets(data.id, onchainWrapped.wallets);
-    return serializeUser(data);
+  if (user) {
+    upsertUserWallets(user.id, onchainWrapped.wallets);
+    return user;
   }
-  const { data: createUserData, error: createUserError } = await supabase
+  const { data: createdUser, error: createUserError } = await supabase
     .from("users")
     .insert({
       talent_id: onchainWrapped.id,
@@ -37,13 +36,13 @@ export async function upsertUserFromAuthToken(authToken: string) {
     .select()
     .maybeSingle();
 
-  upsertUserWallets(createUserData.id, onchainWrapped.wallets);
+  upsertUserWallets(createdUser.id, onchainWrapped.wallets);
 
   if (createUserError) {
     throw createUserError;
   }
 
-  return serializeUser(createUserData);
+  return createdUser;
 }
 
 function upsertUserWallets(userId: number, wallets: string[]) {

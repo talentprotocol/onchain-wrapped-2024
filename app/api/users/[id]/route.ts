@@ -1,4 +1,3 @@
-import { serializeUser } from "@/services/users/serializeUser";
 import { rollbarError } from "@/utils/rollbar/log";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
@@ -23,5 +22,5 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  return NextResponse.json({ user: serializeUser(user) });
+  return NextResponse.json({ user });
 }
