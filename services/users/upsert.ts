@@ -19,7 +19,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
   }
 
   if (data) {
-    upsertUserWallets(data.id, onchainWrapped.wallets);
+    await upsertUserWallets(data.id, onchainWrapped.wallets);
     return serializeUser(data);
   }
   const { data: createUserData, error: createUserError } = await supabase
@@ -37,7 +37,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
     .select()
     .maybeSingle();
 
-  upsertUserWallets(createUserData.id, onchainWrapped.wallets);
+  await upsertUserWallets(createUserData.id, onchainWrapped.wallets);
 
   if (createUserError) {
     throw createUserError;
@@ -46,8 +46,8 @@ export async function upsertUserFromAuthToken(authToken: string) {
   return serializeUser(createUserData);
 }
 
-function upsertUserWallets(userId: number, wallets: string[]) {
-  wallets.forEach(async wallet => {
+async function upsertUserWallets(userId: number, wallets: string[]) {
+  for (const wallet of wallets) {
     const { error } = await supabase
       .from("wallets")
       .upsert({ user_id: userId, address: wallet }, { onConflict: "address" });
@@ -55,5 +55,5 @@ function upsertUserWallets(userId: number, wallets: string[]) {
     if (error) {
       throw error;
     }
-  });
+  }
 }
