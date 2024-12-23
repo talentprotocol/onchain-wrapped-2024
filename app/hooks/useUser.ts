@@ -1,30 +1,18 @@
 "use client";
 
-import { UserModel } from "@/models/user.model";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+import { UserModel } from "@/models/user.model";
 
 export function useGetUser() {
-  const params = useParams();
-  const talentId = params.id;
-  const router = useRouter();
   const [user, setUser] = useState<UserModel>();
 
-  useEffect(() => {
-    const localStorageUser = JSON.parse(localStorage.getItem("user") || "{}");
+  const router = useRouter();
+  const params = useParams();
+  const talentId = params.id;
 
-    if (!talentId) {
-      return router.push("/");
-    }
-
-    console.log("localStorageUser", localStorageUser);
-    if (!localStorageUser?.talent_id || talentId != localStorageUser.talent_id.toString()) {
-      fetchUser();
-    }
-    setUser(localStorageUser);
-  }, []);
-
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     const result = await fetch(`/api/users/${talentId}`, {
       method: "GET",
       headers: {
@@ -41,7 +29,20 @@ export function useGetUser() {
     const user = data.user;
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
-  };
+  }, [router, talentId]);
+
+  useEffect(() => {
+    const localStorageUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+    if (!talentId) {
+      return router.push("/");
+    }
+
+    if (!localStorageUser?.talent_id || talentId != localStorageUser.talent_id?.toString()) {
+      fetchUser();
+    }
+    setUser(localStorageUser);
+  }, [fetchUser, router, talentId]);
 
   return user;
 }
