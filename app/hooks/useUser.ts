@@ -38,13 +38,11 @@ export function useGetUser() {
       return router.push("/");
     }
 
-    console.log("localStorageUser", localStorageUser);
-    if (!localStorageUser || talentId != localStorageUser.talent_id?.toString()) {
+    if (!localStorageUser?.talent_id || talentId != localStorageUser.talent_id?.toString()) {
       fetchUser();
     }
     setUser(localStorageUser);
   }, [fetchUser, router, talentId]);
-
 
   return user;
 }

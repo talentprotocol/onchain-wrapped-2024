@@ -82,7 +82,6 @@ export default function Page() {
         clearInterval(timerIdRef.current);
       }
 
-      console.log("Stop pooling");
       router.push(`/wrapped/${talentId}/talent`);
     };
 
