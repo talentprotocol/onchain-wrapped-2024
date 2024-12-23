@@ -22,6 +22,7 @@ export default function Talent() {
       value: user?.credentials_count
     }
   ];
+
   return (
     <YourBuilderYear
       orgInformation={orgInformation}

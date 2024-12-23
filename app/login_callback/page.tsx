@@ -39,5 +39,10 @@ export default function Page() {
       ["/login_callback"].includes(pathname) && urlSearchParams.has("auth_token") && !!urlSearchParams.get("auth_token")
   });
 
-  return <div className="border-gray-300 h-20 w-20 animate-spin rounded-full border-8 border-t-blue-600" />;
+  return (
+    <div className="flex flex-col items-center gap-8">
+      <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />
+      <h1 className="text-2xl font-semibold">Redirecting...</h1>
+    </div>
+  );
 }

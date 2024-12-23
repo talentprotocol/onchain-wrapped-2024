@@ -26,6 +26,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
     .insert({
       talent_id: onchainWrapped.id,
       builder_score: onchainWrapped.score,
+      image_url: onchainWrapped.image_url,
       onchain_since: onchainWrapped.onchain_since,
       credentials_count: onchainWrapped.credentials_count,
       github_contributions: onchainWrapped.github_contributions,

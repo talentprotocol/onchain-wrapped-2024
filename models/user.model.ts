@@ -4,6 +4,7 @@ export interface UserModel {
   id: number;
   talent_id: number;
   builder_score: number;
+  image_url: string;
   credentials_count: number;
   github_contributions: number;
   ens: string;
