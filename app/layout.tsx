@@ -6,7 +6,7 @@ import Wrapper from "./components/elements/wrapper";
 import ReactQueryProvider from "./components/queryClientProvider";
 import "./globals.css";
 
-const dmMono = DM_Mono({ weight: ["500"], preload: false });
+const dmMono = DM_Mono({ weight: ["300", "400", "500"], preload: false });
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

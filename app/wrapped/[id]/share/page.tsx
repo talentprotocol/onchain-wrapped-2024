@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useState } from "react";
 
 import Copy from "@/app/assets/icons/copy.svg";
@@ -8,8 +9,7 @@ import Farcaster from "@/app/assets/icons/farcaster.svg";
 import Twitter from "@/app/assets/icons/twitter.svg";
 import Placeholder from "@/app/assets/images/placeholder.svg";
 import { Button } from "@/app/components/atoms";
-import { gradients } from "@/app/utils/constants";
-import Link from "next/link";
+import { organizations } from "@/app/utils/constants";
 
 export default function Share() {
   const [selectedColor, setSelectedColor] = useState<number>(0);
@@ -31,7 +31,7 @@ export default function Share() {
       <div className="w-full sm:w-screen h-full flex flex-col items-center justify-around bg-hero-pattern bg-center">
         <Image src={Placeholder} alt="onchain wrapped" className="w-full h-48 sm:w-96 object-contain" />
         <div className="flex items-center gap-2">
-          {Object.values(gradients).map((gradient, index) => (
+          {Object.values(organizations).map(({ gradient }, index) => (
             <Button
               key={index}
               onClick={() => setSelectedColor(index)}

@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import Back from "@/app/assets/icons/back.svg";
 import TalentLogo from "@/app/assets/images/logo.svg";
 import { Button } from "@/app/components/atoms";
-import { gradients } from "@/app/utils/constants";
+import { organizations } from "@/app/utils/constants";
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,12 +16,12 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
   const isInitialPage = useMemo(() => pathname === "/", [pathname]);
   const pathSegments = pathname.split("/");
   const lastPathSegment = pathSegments.pop() || pathSegments.pop() || "";
-  const isGradientPage = useMemo(() => Object.keys(gradients).includes(lastPathSegment), [lastPathSegment]);
+  const isGradientPage = useMemo(() => Object.keys(organizations).includes(lastPathSegment), [lastPathSegment]);
 
   return (
     <main
       className={`flex flex-col items-center h-svh pt-2 ${
-        isGradientPage ? `bg-gradient-to-br ${gradients[lastPathSegment]}` : "bg-background"
+        isGradientPage ? `bg-gradient-to-br ${organizations[lastPathSegment].gradient}` : "bg-background"
       }`}
     >
       <header>

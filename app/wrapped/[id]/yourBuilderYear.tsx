@@ -1,25 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 
 import { Button } from "@/app/components/atoms";
-
-type Achievement = {
-  title: string;
-  value: number | string | undefined;
-};
+import { useGetUser } from "@/app/hooks/useUser";
+import { getAchievements, organizations } from "@/app/utils/constants";
 
 type YourBuilderYearProps = {
-  orgInformation: {
-    org: string;
-    role: string;
-    index: number;
-  };
-  achievements: Achievement[];
-  nextPage: string;
+  organization: keyof typeof organizations;
+  nextPage: keyof typeof organizations | "share";
 };
 
-export default function YourBuilderYear({ orgInformation, achievements, nextPage }: YourBuilderYearProps) {
+export default function YourBuilderYear({ organization, nextPage }: YourBuilderYearProps) {
+  const user = useGetUser();
+
+  const achievements = useMemo(() => getAchievements(user)[organization], [organization, user]);
+  const org = useMemo(() => organizations[organization], [organization]);
+
   return (
     <>
       <div className="flex flex-col items-center gap-2 text-center text-white">
@@ -40,20 +38,20 @@ export default function YourBuilderYear({ orgInformation, achievements, nextPage
         </div>
         <div className="flex flex-col items-center gap-2 text-white uppercase">
           <span className="px-3 py-0.5 border rounded-[64px] bg-white/10 text-white text-sm font-medium font-mono backdrop-blur-sm shadow">
-            {`Powered By ${orgInformation.org}`}
+            {`Powered By ${org.name}`}
           </span>
-          <span className="font-semibold text-2xl">{orgInformation.role}</span>
+          <span className="font-semibold text-2xl">{org.role}</span>
           <div className="flex items-center gap-2 py-4">
             {Array.from(Array(4).keys()).map((_, index) => (
               <div
                 key={index}
-                className={`w-2 h-2 rounded-full ${orgInformation.index === index ? "bg-white" : "bg-white/20"}`}
+                className={`w-2 h-2 rounded-full ${org.index === index ? "bg-white" : "bg-white/20"}`}
               ></div>
             ))}
           </div>
         </div>
       </div>
-      <Link href={nextPage} className="w-full">
+      <Link href={`/wrapped/${user?.talent_id}/${nextPage}`} className="w-full">
         <Button variant="secondary" className="w-full">
           Next
         </Button>

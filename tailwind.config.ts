@@ -66,10 +66,11 @@ export default {
         mono: ["DM Mono", ...defaultTheme.fontFamily.sans]
       },
       backgroundImage: {
-        "hero-pattern": "url('assets/images/hero-pattern.svg')"
+        "hero-pattern": "url('assets/images/hero-pattern.svg')",
+        "share-pattern": "url('assets/images/share-pattern.svg')"
       },
       animation: {
-        'spin-slow': 'spin 3s linear infinite',
+        "spin-slow": "spin 3s linear infinite"
       }
     },
     plugins: []
