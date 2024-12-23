@@ -4,20 +4,22 @@ import Link from "next/link";
 
 import { Button } from "@/app/components/atoms";
 
+type Achievement = {
+  title: string;
+  value: number | string | undefined;
+};
+
 type YourBuilderYearProps = {
   orgInformation: {
     org: string;
     role: string;
-    nextPage: string;
     index: number;
-    achievements: {
-      title: string;
-      value: string;
-    }[];
   };
+  achievements: Achievement[];
+  nextPage: string;
 };
 
-export default function YourBuilderYear({ orgInformation }: YourBuilderYearProps) {
+export default function YourBuilderYear({ orgInformation, achievements, nextPage }: YourBuilderYearProps) {
   return (
     <>
       <div className="flex flex-col items-center gap-2 text-center text-white">
@@ -26,7 +28,7 @@ export default function YourBuilderYear({ orgInformation }: YourBuilderYearProps
       </div>
       <div className="w-full sm:w-screen h-full flex flex-col items-center justify-around bg-hero-pattern bg-center">
         <div className="w-full sm:w-96 flex flex-col items-center gap-2 text-white">
-          {orgInformation.achievements.map(({ title, value }) => (
+          {achievements.map(({ title, value }) => (
             <div
               key={title}
               className="w-full flex flex-col items-center gap-3 p-6 border border-white/60 rounded-3xl bg-white/20 backdrop-blur-sm shadow"
@@ -51,7 +53,7 @@ export default function YourBuilderYear({ orgInformation }: YourBuilderYearProps
           </div>
         </div>
       </div>
-      <Link href={orgInformation.nextPage} className="w-full">
+      <Link href={nextPage} className="w-full">
         <Button variant="secondary" className="w-full">
           Next
         </Button>

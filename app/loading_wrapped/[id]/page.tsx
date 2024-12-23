@@ -31,11 +31,16 @@ export default function Page() {
       router.push("/");
     }
     if (!result.ok) {
-      console.log("result", result);
       setIsPollingEnabled(false);
     }
 
-    setUser(data.user);
+    const user = data.user;
+
+    if (!(user.loading_wallets_pnl || user.loading_wallets_transactions || user.loading_wallets_zora)) {
+      setIsPollingEnabled(false);
+    }
+
+    setUser(user);
   };
 
   useEffect(() => {
@@ -58,6 +63,9 @@ export default function Page() {
       if (timerIdRef.current) {
         clearInterval(timerIdRef.current);
       }
+
+      console.log("Stop pooling");
+      router.push(`/wrapped/${talentId}/talent`);
     };
 
     if (isPageVisible && isPollingEnabled) {

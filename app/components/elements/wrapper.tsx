@@ -14,12 +14,14 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   const isInitialPage = useMemo(() => pathname === "/", [pathname]);
-  const isGradientPage = useMemo(() => Object.keys(gradients).includes(pathname), [pathname]);
+  const pathSegments = pathname.split("/");
+  const lastPathSegment = pathSegments.pop() || pathSegments.pop() || "";
+  const isGradientPage = useMemo(() => Object.keys(gradients).includes(lastPathSegment), [pathname]);
 
   return (
     <main
       className={`flex flex-col items-center h-svh pt-2 ${
-        isGradientPage ? `bg-gradient-to-br ${gradients[pathname]}` : "bg-background"
+        isGradientPage ? `bg-gradient-to-br ${gradients[lastPathSegment]}` : "bg-background"
       }`}
     >
       <header>
