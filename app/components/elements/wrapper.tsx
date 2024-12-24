@@ -16,7 +16,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
 
   const isInitialPage = useMemo(() => pathname === "/", [pathname]);
   const pathSegments = pathname.split("/");
-  const lastPathSegment = pathSegments.pop() || pathSegments.pop() || "";
+  const lastPathSegment = (pathSegments.pop() || "") as keyof typeof organizations;
   const isGradientPage = useMemo(() => Object.keys(organizations).includes(lastPathSegment), [lastPathSegment]);
 
   useEffect(() => {
