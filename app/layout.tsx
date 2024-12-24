@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Mono, Inter } from "next/font/google";
 import { Suspense } from "react";
 
+import { Toaster } from "./components/atoms";
 import Wrapper from "./components/elements/wrapper";
 import ReactQueryProvider from "./components/queryClientProvider";
 
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={`${dmMono.className} ${inter.className} antialiased overflow-hidden`}>
         <ReactQueryProvider>
           <Suspense>
+            <Toaster />
             <Wrapper>{children}</Wrapper>
           </Suspense>
         </ReactQueryProvider>
