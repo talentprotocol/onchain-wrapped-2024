@@ -66,7 +66,7 @@ export default function Share() {
         <ButtonFarcaster />
         <ButtonTwitter />
         <ButtonCopy color={color} />
-        {!!authToken && user && <ButtonRefresh authToken={authToken} talentId={user.talent_id} setImg={setImg} />}
+        {!!authToken && user && <ButtonRefresh authToken={authToken} talentId={user.talent_id} />}
       </div>
     </>
   );
