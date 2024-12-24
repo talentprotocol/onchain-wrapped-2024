@@ -23,6 +23,10 @@ export default function Page() {
         }
       });
 
+      if (!result.ok) {
+        router.push("/");
+      }
+
       const data = await result.json();
       const token = data?.authToken?.token;
 

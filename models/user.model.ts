@@ -13,6 +13,7 @@ export interface UserModel {
   wallets: WalletModel[];
   base_testnet_contracts_deployed: number;
   base_mainnet_contracts_deployed: number;
+  loading_builder_score: boolean;
   loading_wallets_pnl: boolean;
   loading_wallets_transactions: boolean;
   loading_wallets_zora: boolean;

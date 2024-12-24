@@ -16,8 +16,6 @@ export async function refreshUserWalletsData(userId: number) {
     .select("address")
     .eq("user_id", userId);
 
-  console.log("wallets", wallets);
-
   if (getWalletsError) {
     rollbarError("Unable to get user wallets", getWalletsError);
     return;

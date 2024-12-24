@@ -17,22 +17,39 @@ export async function upsertUserFromAuthToken(authToken: string) {
     throw getUserError;
   }
 
+  const wrappedData = {
+    builder_score: onchainWrapped.score,
+    image_url: onchainWrapped.image_url,
+    loading_builder_score: onchainWrapped.calculating_score,
+    ens: onchainWrapped.ens,
+    onchain_since: onchainWrapped.onchain_since,
+    credentials_count: onchainWrapped.credentials_count,
+    github_contributions: onchainWrapped.github_contributions,
+    base_testnet_contracts_deployed: onchainWrapped.base_testnet_contracts_deployed,
+    base_mainnet_contracts_deployed: onchainWrapped.base_mainnet_contracts_deployed
+  };
+
   if (user) {
-    await upsertUserWallets(user.id, onchainWrapped.wallets);
+    const { data: updatedUser, error } = await supabase
+      .from("users")
+      .update(wrappedData)
+      .eq("id", user.id)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      throw error;
+    }
+
+    await upsertUserWallets(updatedUser.id, onchainWrapped.wallets);
     return user;
   }
+
   const { data: createdUser, error: createUserError } = await supabase
     .from("users")
     .insert({
       talent_id: onchainWrapped.id,
-      builder_score: onchainWrapped.score,
-      image_url: onchainWrapped.image_url,
-      onchain_since: onchainWrapped.onchain_since,
-      credentials_count: onchainWrapped.credentials_count,
-      github_contributions: onchainWrapped.github_contributions,
-      ens: onchainWrapped.ens,
-      base_testnet_contracts_deployed: onchainWrapped.base_testnet_contracts_deployed,
-      base_mainnet_contracts_deployed: onchainWrapped.base_mainnet_contracts_deployed
+      ...wrappedData
     })
     .select()
     .maybeSingle();

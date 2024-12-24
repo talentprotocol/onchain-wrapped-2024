@@ -12,6 +12,18 @@ import Link from "next/link";
 
 const loadingWallets: { name: string; loading: keyof UserModel }[] = [
   {
+    name: "Builder Score",
+    loading: "loading_builder_score"
+  },
+  {
+    name: "Talent Protocol credentials",
+    loading: "loading_builder_score"
+  },
+  {
+    name: "Github contributions",
+    loading: "loading_builder_score"
+  },
+  {
     name: "Base Transactions",
     loading: "loading_wallets_transactions"
   },
@@ -56,13 +68,21 @@ export default function Page() {
 
   const talentId = params.id;
 
-  const loading = user?.loading_wallets_pnl || user?.loading_wallets_transactions || user?.loading_wallets_zora;
+  const loading =
+    !user || user?.loading_wallets_pnl || user?.loading_wallets_transactions || user?.loading_wallets_zora;
 
   const fetchUser = useCallback(async () => {
+    const authToken = localStorage.getItem("auth_token");
+
+    if (!authToken) {
+      router.push("/");
+    }
+
     const result = await fetch(`/api/users/${talentId}`, {
       method: "GET",
       headers: {
-        Accept: "application/json"
+        Accept: "application/json",
+        AUTHORIZATION: `Bearer ${authToken}`
       }
     });
 
@@ -145,18 +165,6 @@ export default function Page() {
         <h1 className="text-2xl font-semibold">Check completed</h1>
       )}
       <div className="w-full flex flex-col gap-6">
-        <div className="w-full flex justify-between">
-          <span className="text-sm">Builder Score</span>
-          <Image alt="" src={Check} />
-        </div>
-        <div className="w-full flex justify-between">
-          <span className="text-sm">Talent Protocol credentials</span>
-          <Image alt="" src={Check} />
-        </div>
-        <div className="w-full flex justify-between">
-          <span className="text-sm">Github contributions</span>
-          <Image alt="" src={Check} />
-        </div>
         {loadingWallets.map(({ loading, name }) => (
           <div key={name} className="w-full flex justify-between">
             <span className="text-sm">{name}</span>
