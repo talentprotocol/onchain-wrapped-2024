@@ -24,13 +24,19 @@ export default function Share() {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-2 text-center">
+      <div data-aos="fade-down" className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-semibold">Onchain Wrapped 2024</h1>
         <p className="font-normal">Share your 2024 Onchain Wrapped, and get the recognition you deserve.</p>
       </div>
       <div className="w-full sm:w-screen h-full flex flex-col items-center justify-around bg-hero-pattern bg-center">
-        <Image src={Placeholder} alt="onchain wrapped" className="w-full h-48 sm:w-96 object-contain" />
-        <div className="flex items-center gap-2">
+        <Image
+          data-aos="flip-up"
+          data-aos-duration="2000"
+          src={Placeholder}
+          alt="onchain wrapped"
+          className="w-full h-48 sm:w-96 object-contain"
+        />
+        <div data-aos="fade-up" className="flex items-center gap-2">
           {Object.values(gradients).map((gradient, index) => (
             <Button
               key={index}
@@ -47,7 +53,7 @@ export default function Share() {
           ))}
         </div>
       </div>
-      <div className="w-full flex flex-col gap-2">
+      <div data-aos="fade-up" className="w-full flex flex-col gap-2">
         <Button variant="secondary" className="w-full flex items-center gap-2">
           <Image src={Farcaster} alt="" width={16} height={16} />
           <span>Share on Farcaster</span>

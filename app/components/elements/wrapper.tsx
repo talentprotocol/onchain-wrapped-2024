@@ -1,8 +1,9 @@
 "use client";
 
+import AOS from "aos";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import Back from "@/app/assets/icons/back.svg";
 import TalentLogo from "@/app/assets/images/logo.svg";
@@ -17,6 +18,13 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
   const pathSegments = pathname.split("/");
   const lastPathSegment = pathSegments.pop() || pathSegments.pop() || "";
   const isGradientPage = useMemo(() => Object.keys(gradients).includes(lastPathSegment), [lastPathSegment]);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: false
+    });
+  }, []);
 
   return (
     <main

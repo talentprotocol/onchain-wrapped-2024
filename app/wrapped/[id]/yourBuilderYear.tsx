@@ -19,14 +19,22 @@ type YourBuilderYearProps = {
   nextPage: string;
 };
 
+const animations = ["right", "up", "left", "down"];
+
 export default function YourBuilderYear({ orgInformation, achievements, nextPage }: YourBuilderYearProps) {
   return (
     <>
-      <div className="flex flex-col items-center gap-2 text-center text-white">
+      <div
+        data-aos={`fade-${animations[orgInformation.index]}`}
+        className="flex flex-col items-center gap-2 text-center text-white"
+      >
         <h1 className="text-2xl font-semibold">Your Builder Year</h1>
         <p className="font-normal">Share your 2024 builder recap, and get the recognition you deserve.</p>
       </div>
-      <div className="w-full sm:w-screen h-full flex flex-col items-center justify-around bg-hero-pattern bg-center">
+      <div
+        data-aos={`zoom-in-${animations[orgInformation.index]}`}
+        className="w-full sm:w-screen h-full flex flex-col items-center justify-around bg-hero-pattern bg-center"
+      >
         <div className="w-full sm:w-96 flex flex-col items-center gap-2 text-white">
           {achievements.map(({ title, value }) => (
             <div
