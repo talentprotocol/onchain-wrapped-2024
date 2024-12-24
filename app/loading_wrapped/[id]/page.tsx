@@ -8,7 +8,7 @@ import Check from "@/app/assets/icons/check.svg";
 import { usePageVisibility } from "@/app/hooks/useVisibility";
 import type { UserModel } from "@/models/user.model";
 
-const loadingWallets: Record<string, string>[] = [
+const loadingWallets: { name: string; loading: keyof UserModel }[] = [
   {
     name: "Transactions",
     loading: "loading_wallets_transactions"
@@ -108,7 +108,7 @@ export default function Page() {
         {loadingWallets.map(({ loading, name }) => (
           <div key={name} className="w-full flex justify-between">
             <span className="text-sm">{name}</span>
-            {user?.[loading as keyof UserModel] ? (
+            {user?.[loading] ? (
               <div className="h-5 w-5 rounded-full border border-primary border-2 border-t-transparent border-l-transparent animate-spin-slow" />
             ) : (
               <Image alt="" src={Check} />

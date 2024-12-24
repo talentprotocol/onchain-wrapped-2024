@@ -4,9 +4,12 @@ import { Suspense } from "react";
 
 import Wrapper from "./components/elements/wrapper";
 import ReactQueryProvider from "./components/queryClientProvider";
+
+import "aos/dist/aos.css";
+
 import "./globals.css";
 
-const dmMono = DM_Mono({ weight: ["500"], preload: false });
+const dmMono = DM_Mono({ weight: ["300", "400", "500"], preload: false });
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,12 +24,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmMono.className} ${inter.className} antialiased`}>
+      <body className={`${dmMono.className} ${inter.className} antialiased overflow-hidden`}>
         <ReactQueryProvider>
           <Suspense>
             <Wrapper>{children}</Wrapper>
           </Suspense>
         </ReactQueryProvider>
+        <div className="absolute top-0 left-0 w-screen h-screen bg-hero-pattern bg-center animate-pulse"></div>
       </body>
     </html>
   );
