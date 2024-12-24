@@ -29,15 +29,12 @@ export default function YourBuilderYear({ organization, nextPage }: YourBuilderY
         <h1 className="text-2xl font-semibold">Your Builder Year</h1>
         <p className="font-normal">Share your 2024 builder recap, and get the recognition you deserve.</p>
       </div>
-      <div
-        data-aos={`zoom-in-${animations[org.index]}`}
-        className="w-full sm:w-screen h-full flex flex-col items-center justify-around bg-hero-pattern bg-center"
-      >
+      <div data-aos={`zoom-in-${animations[org.index]}`} className="h-full flex flex-col items-center justify-around">
         <div className="w-full sm:w-96 flex flex-col items-center gap-2 text-white">
           {achievements.map(({ title, value }) => (
             <div
               key={title}
-              className="w-full flex flex-col items-center gap-3 p-6 border border-white/60 rounded-3xl bg-white/20 backdrop-blur-sm shadow"
+              className="w-full flex flex-col items-center gap-3 p-6 border border-white/60 rounded-3xl bg-gradient-to-r from-white/30 via-white/40 to-white/30 backdrop-blur-sm shadow-lg"
             >
               <span className="font-bold text-4xl">{value}</span>
               <span className="font-semibold text-xs uppercase">{title}</span>
@@ -45,7 +42,7 @@ export default function YourBuilderYear({ organization, nextPage }: YourBuilderY
           ))}
         </div>
         <div className="flex flex-col items-center gap-2 text-white uppercase">
-          <span className="px-3 py-0.5 border rounded-[64px] bg-white/10 text-white text-sm font-medium font-mono backdrop-blur-sm shadow">
+          <span className="px-3 py-0.5 border rounded-[64px] bg-white/10 text-white text-sm font-medium font-mono bg-gradient-to-r from-white/30 via-white/40 to-white/30 backdrop-blur-sm shadow-lg">
             {`Powered By ${org.name}`}
           </span>
           <span className="font-semibold text-2xl">{org.role}</span>

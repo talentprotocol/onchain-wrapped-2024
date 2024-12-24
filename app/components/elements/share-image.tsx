@@ -49,7 +49,7 @@ export default function ShareImage({ org, ref }: ShareImageProps) {
             </span>
           </h1>
         </div>
-        <div className="w-full h-min flex items-center gap-4 p-6 border-2 border-white rounded-3xl text-2xl font-light backdrop-blur-2xl shadow">
+        <div className="w-full h-min flex items-center gap-4 p-6 border-2 border-white rounded-3xl text-2xl font-light bg-gradient-to-r from-white/30 via-white/40 to-white/30 backdrop-blur-2xl shadow">
           {user?.image_url && (
             <Image src={user?.image_url} alt="User profile image" className="w-20 h-20 rounded-2xl object-cover" />
           )}
@@ -78,13 +78,13 @@ export default function ShareImage({ org, ref }: ShareImageProps) {
         {Object.keys(organizations).map(org => (
           <div
             key={org}
-            className="w-full h-full flex flex-col items-start gap-2 justify-between p-6 border-2 border-white rounded-3xl bg-white/20 backdrop-blur-2xl shadow"
+            className="w-full h-full flex flex-col items-start gap-2 justify-between p-6 border-2 border-white rounded-3xl bg-gradient-to-r from-white/30 via-white/40 to-white/30 backdrop-blur-2xl shadow"
           >
             <div className="flex items-center gap-2 text-sm font-medium tracking-widest">
               <span className="px-3 py-1 border-2 border-accent-foreground rounded-[32px] bg-accent-foreground text-white">
                 {organizations[org as keyof typeof organizations].role}
               </span>
-              <span className="px-3 py-1 border-2 border-white rounded-[32px] bg-white/20 backdrop-blur-2xl">
+              <span className="px-3 py-1 border-2 border-white rounded-[32px] bg-gradient-to-r from-white/30 via-white/40 to-white/30 backdrop-blur-2xl">
                 {`Powered By ${organizations[org as keyof typeof organizations].name}`}
               </span>
             </div>

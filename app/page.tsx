@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <>
       <h1 className="text-2xl font-semibold">Onchain Wrapped 2024</h1>
-      <div className="w-full sm:w-screen h-full flex items-center justify-center bg-hero-pattern bg-center">
+      <div className="h-full flex items-center justify-center">
         <div
           data-aos="zoom-in"
           className="w-min h-64 flex flex-col items-start justify-between p-6 border rounded-[40px] bg-white shadow font-mono uppercase"
