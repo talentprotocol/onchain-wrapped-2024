@@ -65,7 +65,7 @@ export default function Share() {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-2 text-center">
+      <div data-aos="fade-down" className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-semibold">Onchain Wrapped 2024</h1>
         <p className="font-normal">Share your 2024 Onchain Wrapped, and get the recognition you deserve.</p>
       </div>
@@ -76,6 +76,8 @@ export default function Share() {
           <>
             {img && (
               <Image
+                data-aos="flip-up"
+                data-aos-duration="2000"
                 src={img}
                 alt="onchain wrapped"
                 width={16}
@@ -83,7 +85,7 @@ export default function Share() {
                 className="w-full sm:w-96 object-contain border rounded-2xl shadow"
               />
             )}
-            <div className="flex items-center gap-2">
+            <div data-aos="fade-up" className="flex items-center gap-2">
               {Object.keys(organizations).map(key => (
                 <Button
                   key={key}
@@ -105,7 +107,7 @@ export default function Share() {
           </>
         )}
       </div>
-      <div className="w-full flex flex-col gap-2">
+      <div data-aos="fade-up" className="w-full flex flex-col gap-2">
         <Link href={`https://warpcast.com/~/compose?text=${img}`} data-size="large">
           <Button variant="secondary" className="w-full flex items-center gap-2">
             <Image src={Farcaster} alt="" width={16} height={16} />
