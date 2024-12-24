@@ -31,8 +31,6 @@ export default function ShareImage({ org, ref }: ShareImageProps) {
     });
   }, [user]);
 
-  console.log({ aa: organizations[org] });
-
   return (
     <div
       ref={ref}

@@ -7,9 +7,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import Copy from "@/app/assets/icons/copy.svg";
 import Farcaster from "@/app/assets/icons/farcaster.svg";
-import Twitter from "@/app/assets/icons/twitter.svg";
 import { Button } from "@/app/components/atoms";
-import ShareImage from "@/app/components/elements/shareImage";
+import ButtonTwitter from "@/app/components/elements/button-twitter";
+import ShareImage from "@/app/components/elements/share-image";
 import { useGetUser } from "@/app/hooks/useUser";
 import { organizations } from "@/app/utils/constants";
 
@@ -52,8 +52,15 @@ export default function Share() {
     }
   }, [ref]);
 
+  const copyImageToClipboard = useCallback(() => {
+    if (!img) return;
+    navigator.clipboard.writeText(img);
+  }, [img]);
+
   useEffect(() => {
-    generateImage();
+    if (user && colorIndex) {
+      generateImage();
+    }
   }, [user, colorIndex, generateImage]);
 
   return (
@@ -73,7 +80,7 @@ export default function Share() {
                 alt="onchain wrapped"
                 width={16}
                 height={16}
-                className="w-full sm:w-1/3 object-contain border rounded-2xl shadow"
+                className="w-full sm:w-96 object-contain border rounded-2xl shadow"
               />
             )}
             <div className="flex items-center gap-2">
@@ -99,18 +106,16 @@ export default function Share() {
         )}
       </div>
       <div className="w-full flex flex-col gap-2">
-        <Button variant="secondary" className="w-full flex items-center gap-2">
-          <Image src={Farcaster} alt="" width={16} height={16} />
-          <span>Share on Farcaster</span>
-        </Button>
-
-        <Link href="https://twitter.com/intent/tweet?text=Hello%20world" data-size="large">
+        <Link href={`https://warpcast.com/~/compose?text=${img}`} data-size="large">
           <Button variant="secondary" className="w-full flex items-center gap-2">
-            <Image src={Twitter} alt="" width={16} height={16} />
-            <span>Share on X</span>
+            <Image src={Farcaster} alt="" width={16} height={16} />
+            <span>Share on Farcaster</span>
           </Button>
         </Link>
-        <Button className="w-full flex items-center gap-2">
+
+        <ButtonTwitter />
+
+        <Button className="w-full flex items-center gap-2" onClick={copyImageToClipboard}>
           <Image src={Copy} alt="" width={16} height={16} />
           <span>Copy image</span>
         </Button>
