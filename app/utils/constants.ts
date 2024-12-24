@@ -78,7 +78,7 @@ export const getAchievements = (user?: UserModel): Record<string, Achievement[]>
     {
       title: "Estimated Profit",
       value: `$${user?.year_pnl?.toLocaleString("en-us", {
-        maximumFractionDigits: 2
+        maximumFractionDigits: 0
       })}`
     }
   ],

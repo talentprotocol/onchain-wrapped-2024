@@ -16,18 +16,21 @@
     "@tanstack/react-query": "^5.62.8",
     "@vercel/functions": "^1.5.2",
     "aos": "^2.3.4",
+    "@zoralabs/protocol-sdk": "^0.11.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "jose": "^5.9.6",
     "lucide-react": "^0.469.0",
     "next": "15.1.0",
+    "pinata-web3": "^0.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.0.2",
     "rollbar": "^2.26.4",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "vercel": "^32.3.0"
+    "vercel": "^39.2.2",
+    "viem": "^2.21.57"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

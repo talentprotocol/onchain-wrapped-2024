@@ -5,11 +5,22 @@ import Image from "next/image";
 import Wallet from "@/app/assets/icons/wallet.svg";
 import { Button } from "@/app/components/atoms";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
 
+  useEffect(() => {
+    const authToken = localStorage.getItem("auth_token");
+
+    if (authToken) {
+      router.push(`/login_callback?auth_token=${authToken}`);
+    }
+  }, []);
+
   const redirectToTalentProtocolSignIn = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("auth_token");
     router.push(
       `${process.env.NEXT_PUBLIC_TALENT_PROTOCOL_LOGIN_URL}/sign_in?redirect_url=${location.origin}/login_callback`
     );
