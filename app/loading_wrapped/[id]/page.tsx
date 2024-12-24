@@ -5,20 +5,42 @@ import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import Check from "@/app/assets/icons/check.svg";
+import { Button } from "@/app/components/atoms";
 import { usePageVisibility } from "@/app/hooks/useVisibility";
 import type { UserModel } from "@/models/user.model";
+import Link from "next/link";
 
 const loadingWallets: { name: string; loading: keyof UserModel }[] = [
   {
-    name: "Transactions",
+    name: "Base Transactions",
     loading: "loading_wallets_transactions"
   },
   {
-    name: "PNL",
+    name: "Ethereum Transactions",
+    loading: "loading_wallets_transactions"
+  },
+  {
+    name: "BSC Transactions",
+    loading: "loading_wallets_transactions"
+  },
+  {
+    name: "Optimism Transactions",
+    loading: "loading_wallets_transactions"
+  },
+  {
+    name: "Arbitrum Transactions",
+    loading: "loading_wallets_transactions"
+  },
+  {
+    name: "Wallets PnL",
     loading: "loading_wallets_pnl"
   },
   {
-    name: "Zora",
+    name: "Zora Posts",
+    loading: "loading_wallets_zora"
+  },
+  {
+    name: "Zora Mints",
     loading: "loading_wallets_zora"
   }
 ];
@@ -33,6 +55,8 @@ export default function Page() {
   const params = useParams();
 
   const talentId = params.id;
+
+  const loading = user?.loading_wallets_pnl || user?.loading_wallets_transactions || user?.loading_wallets_zora;
 
   const fetchUser = useCallback(async () => {
     const result = await fetch(`/api/users/${talentId}`, {
@@ -81,8 +105,6 @@ export default function Page() {
       if (timerIdRef.current) {
         clearInterval(timerIdRef.current);
       }
-
-      router.push(`/wrapped/${talentId}/talent`);
     };
 
     if (isPageVisible && isPollingEnabled) {
@@ -96,13 +118,43 @@ export default function Page() {
     };
   }, [fetchUser, isPageVisible, isPollingEnabled, router, talentId]);
 
+  const redirectToTalentProtocolIntegrations = () => {
+    router.push(
+      `${process.env.NEXT_PUBLIC_TALENT_PROTOCOL_PASSPORT_URL}/settings/integrations?auth_token=${localStorage.getItem(
+        "auth_token"
+      )}`
+    );
+  };
+
+  const redirectToTalentProtocolWallets = () => {
+    router.push(
+      `${process.env.NEXT_PUBLIC_TALENT_PROTOCOL_PASSPORT_URL}/settings/wallets?auth_token=${localStorage.getItem(
+        "auth_token"
+      )}`
+    );
+  };
+
   return (
-    <div className="flex flex-col items-center gap-8">
-      <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />
-      <h1 className="text-2xl font-semibold">Checking onchain data...</h1>
-      <div className="w-full flex flex-col gap-4">
+    <div className="flex flex-col items-center gap-8 w-full">
+      {loading && (
+        <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />
+      )}
+      {loading ? (
+        <h1 className="text-2xl font-semibold">Checking onchain data...</h1>
+      ) : (
+        <h1 className="text-2xl font-semibold">Check completed</h1>
+      )}
+      <div className="w-full flex flex-col gap-6">
         <div className="w-full flex justify-between">
-          <span className="text-sm">Talent Data</span>
+          <span className="text-sm">Builder Score</span>
+          <Image alt="" src={Check} />
+        </div>
+        <div className="w-full flex justify-between">
+          <span className="text-sm">Talent Protocol credentials</span>
+          <Image alt="" src={Check} />
+        </div>
+        <div className="w-full flex justify-between">
+          <span className="text-sm">Github contributions</span>
           <Image alt="" src={Check} />
         </div>
         {loadingWallets.map(({ loading, name }) => (
@@ -115,6 +167,27 @@ export default function Page() {
             )}
           </div>
         ))}
+      </div>
+      <div className="w-full flex flex-col gap-3">
+        <Button
+          variant="secondary"
+          onClick={redirectToTalentProtocolIntegrations}
+          className="w-full flex items-center gap-2"
+        >
+          <span>Connect more socials</span>
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={redirectToTalentProtocolWallets}
+          className="w-full flex items-center gap-2"
+        >
+          <span>Add more wallets</span>
+        </Button>
+        <Link href={`/wrapped/${user?.talent_id}/talent`} className="w-full">
+          <Button variant="default" className="w-full">
+            Check my 2024 Wrapped
+          </Button>
+        </Link>
       </div>
     </div>
   );

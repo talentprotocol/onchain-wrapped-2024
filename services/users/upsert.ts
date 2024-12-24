@@ -18,7 +18,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
   }
 
   if (user) {
-    upsertUserWallets(user.id, onchainWrapped.wallets);
+    await upsertUserWallets(user.id, onchainWrapped.wallets);
     return user;
   }
   const { data: createdUser, error: createUserError } = await supabase
@@ -37,7 +37,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
     .select()
     .maybeSingle();
 
-  upsertUserWallets(createdUser.id, onchainWrapped.wallets);
+  await upsertUserWallets(createdUser.id, onchainWrapped.wallets);
 
   if (createUserError) {
     throw createUserError;

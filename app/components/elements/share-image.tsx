@@ -31,6 +31,8 @@ export default function ShareImage({ org, ref }: ShareImageProps) {
     });
   }, [user]);
 
+  const onchainSince = user?.onchain_since ? new Date(user?.onchain_since).getFullYear() : "-";
+
   return (
     <div
       ref={ref}
@@ -51,17 +53,18 @@ export default function ShareImage({ org, ref }: ShareImageProps) {
         </div>
         <div className="w-full h-min flex items-center gap-4 p-6 border-2 border-white rounded-3xl text-2xl font-light bg-gradient-to-r from-white/30 via-white/40 to-white/30 backdrop-blur-2xl shadow">
           {user?.image_url && (
-            <Image src={user?.image_url} alt="User profile image" className="w-20 h-20 rounded-2xl object-cover" />
+            <Image
+              src={user?.image_url}
+              width="24"
+              height="24"
+              alt="User profile image"
+              className="w-20 h-20 rounded-2xl object-cover"
+            />
           )}
           <div className="w-full flex justify-between gap-2">
             <div className="flex flex-col gap-2">
               <span className="font-medium">{user?.ens ?? "-"}</span>
-              <span>
-                Onchain since’
-                {typeof user?.onchain_since === "string"
-                  ? user?.onchain_since ?? "-"
-                  : user?.onchain_since?.toString() ?? "-"}
-              </span>
+              <span>{`Onchain since' ${onchainSince}`}</span>
             </div>
             <div className="flex flex-col gap-2 text-right">
               <span>

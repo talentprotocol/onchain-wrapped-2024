@@ -10,6 +10,8 @@ export default function Home() {
   const router = useRouter();
 
   const redirectToTalentProtocolSignIn = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("auth_token");
     router.push(
       `${process.env.NEXT_PUBLIC_TALENT_PROTOCOL_LOGIN_URL}/sign_in?redirect_url=${location.origin}/login_callback`
     );
