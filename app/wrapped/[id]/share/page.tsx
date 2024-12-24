@@ -2,12 +2,11 @@
 
 import { toPng } from "html-to-image";
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import Copy from "@/app/assets/icons/copy.svg";
-import Farcaster from "@/app/assets/icons/farcaster.svg";
 import { Button } from "@/app/components/atoms";
+import ButtonCopy from "@/app/components/elements/button-copy";
+import ButtonFarcaster from "@/app/components/elements/button-farcaster";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
 import ShareImage from "@/app/components/elements/share-image";
 import { useGetUser } from "@/app/hooks/useUser";
@@ -21,7 +20,6 @@ export default function Share() {
 
   const [colorIndex, setColorIndex] = useState<OrganizationKey>("talent");
   const [img, setImg] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
 
   const getButtonBorder = useCallback(
     (index: OrganizationKey, type: "inside" | "outside") => {
@@ -33,7 +31,6 @@ export default function Share() {
   const generateImage = useCallback(async () => {
     if (!ref.current) return;
 
-    setLoading(true);
     try {
       const clonedElement = ref.current.cloneNode(true) as HTMLDivElement;
       clonedElement.classList.remove("hidden");
@@ -47,15 +44,8 @@ export default function Share() {
       document.body.removeChild(clonedElement);
     } catch (error) {
       console.error("Error generating image:", error);
-    } finally {
-      setLoading(false);
     }
   }, [ref]);
-
-  const copyImageToClipboard = useCallback(() => {
-    if (!img) return;
-    navigator.clipboard.writeText(img);
-  }, [img]);
 
   useEffect(() => {
     if (user && colorIndex) {
@@ -70,57 +60,40 @@ export default function Share() {
         <p className="font-normal">Share your 2024 Onchain Wrapped, and get the recognition you deserve.</p>
       </div>
       <div className="w-full sm:w-screen h-full flex flex-col items-center justify-around bg-hero-pattern bg-center">
-        {loading ? (
+        {!img ? (
           <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />
         ) : (
-          <>
-            {img && (
-              <Image
-                data-aos="flip-up"
-                data-aos-duration="2000"
-                src={img}
-                alt="onchain wrapped"
-                width={16}
-                height={16}
-                className="w-full sm:w-96 object-contain border rounded-2xl shadow"
-              />
-            )}
-            <div data-aos="fade-up" className="flex items-center gap-2">
-              {Object.keys(organizations).map(key => (
-                <Button
-                  key={key}
-                  onClick={() => setColorIndex(key as OrganizationKey)}
-                  className={`w-10 h-10 p-0 border-2 ${getButtonBorder(
-                    key as OrganizationKey,
-                    "outside"
-                  )} rounded-full`}
-                >
-                  <div
-                    className={`w-full h-full border-2 ${getButtonBorder(
-                      key as OrganizationKey,
-                      "inside"
-                    )} rounded-full bg-gradient-to-br ${organizations[key as OrganizationKey].gradient}`}
-                  ></div>
-                </Button>
-              ))}
-            </div>
-          </>
+          <Image
+            data-aos="flip-up"
+            data-aos-duration="2000"
+            src={img}
+            alt="onchain wrapped"
+            width={16}
+            height={16}
+            className="w-full sm:w-96 object-contain border rounded-2xl shadow"
+          />
         )}
+        <div data-aos="fade-up" className="flex items-center gap-2">
+          {Object.keys(organizations).map(key => (
+            <Button
+              key={key}
+              onClick={() => setColorIndex(key as OrganizationKey)}
+              className={`w-10 h-10 p-0 border-2 ${getButtonBorder(key as OrganizationKey, "outside")} rounded-full`}
+            >
+              <div
+                className={`w-full h-full border-2 ${getButtonBorder(
+                  key as OrganizationKey,
+                  "inside"
+                )} rounded-full bg-gradient-to-br ${organizations[key as OrganizationKey].gradient}`}
+              ></div>
+            </Button>
+          ))}
+        </div>
       </div>
       <div data-aos="fade-up" className="w-full flex flex-col gap-2">
-        <Link href={`https://warpcast.com/~/compose?text=${img}`} data-size="large">
-          <Button variant="secondary" className="w-full flex items-center gap-2">
-            <Image src={Farcaster} alt="" width={16} height={16} />
-            <span>Share on Farcaster</span>
-          </Button>
-        </Link>
-
+        <ButtonFarcaster />
         <ButtonTwitter />
-
-        <Button className="w-full flex items-center gap-2" onClick={copyImageToClipboard}>
-          <Image src={Copy} alt="" width={16} height={16} />
-          <span>Copy image</span>
-        </Button>
+        <ButtonCopy img={img} />
       </div>
       <ShareImage ref={ref} org={colorIndex} />
     </>
