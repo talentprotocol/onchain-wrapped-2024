@@ -13,10 +13,12 @@ export function useGetUser() {
   const talentId = params.id;
 
   const fetchUser = useCallback(async () => {
+    const authToken = localStorage.getItem("auth_token");
     const result = await fetch(`/api/users/${talentId}`, {
       method: "GET",
       headers: {
-        Accept: "application/json"
+        Accept: "application/json",
+        AUTHORIZATION: `Bearer ${authToken}`
       }
     });
 

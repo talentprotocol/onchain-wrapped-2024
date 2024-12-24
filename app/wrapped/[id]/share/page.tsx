@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/app/components/atoms";
 import ButtonCopy from "@/app/components/elements/button-copy";
 import ButtonFarcaster from "@/app/components/elements/button-farcaster";
+import ButtonRefresh from "@/app/components/elements/button-refresh";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
 import ShareImage from "@/app/components/elements/share-image";
 import { useGetUser } from "@/app/hooks/useUser";
@@ -20,6 +21,7 @@ export default function Share() {
 
   const [colorIndex, setColorIndex] = useState<OrganizationKey>("talent");
   const [img, setImg] = useState<string | null>(null);
+  const [authToken, setAuthToken] = useState<string | null>(null);
 
   const getButtonBorder = useCallback(
     (index: OrganizationKey, type: "inside" | "outside") => {
@@ -52,6 +54,10 @@ export default function Share() {
       generateImage();
     }
   }, [user, colorIndex, generateImage]);
+
+  useEffect(() => {
+    setAuthToken(localStorage.getItem("auth_token"));
+  }, []);
 
   return (
     <>
@@ -97,6 +103,8 @@ export default function Share() {
             <ButtonFarcaster />
             <ButtonTwitter />
             <ButtonCopy img={img} />
+
+            {!!authToken && user && <ButtonRefresh authToken={authToken} talentId={user.talent_id} setImg={setImg} />}
           </div>
         </>
       )}
