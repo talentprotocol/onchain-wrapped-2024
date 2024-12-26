@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/app/components/atoms";
 import ButtonCopy from "@/app/components/elements/button-copy";
@@ -28,6 +28,8 @@ export default function Share() {
     [color]
   );
 
+  const imageUrl = useMemo(() => `/api/users/${user?.talent_id}/image?color=${color}`, [color, user]);
+
   useEffect(() => {
     setAuthToken(localStorage.getItem("auth_token"));
   }, []);
@@ -46,7 +48,7 @@ export default function Share() {
         <Image
           data-aos="flip-up"
           data-aos-duration="2000"
-          src={`/api/users/${user?.talent_id}/image?color=${color}`}
+          src={imageUrl}
           alt="onchain wrapped"
           width={1200}
           height={630}
@@ -92,7 +94,7 @@ export default function Share() {
         {!!authToken && user && (
           <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
         )}
-        {user && <ButtonCopy imageUrl={`/api/users/${user?.talent_id}/image?color=${color}`} />}
+        <ButtonCopy imageUrl={imageUrl} />
       </div>
     </>
   );
