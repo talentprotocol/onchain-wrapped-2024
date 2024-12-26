@@ -48,6 +48,7 @@ export default function Share() {
           width={1200}
           height={630}
           className="w-full sm:w-[500px] object-contain border rounded-2xl shadow"
+          priority
         />
         <div data-aos="fade-up" className="flex items-center gap-2">
           {Object.keys(organizations).map(key => (
