@@ -16,7 +16,7 @@ export default function Home() {
     if (authToken) {
       router.push(`/login_callback?auth_token=${authToken}`);
     }
-  }, []);
+  }, [router]);
 
   const redirectToTalentProtocolSignIn = () => {
     localStorage.removeItem("user");
