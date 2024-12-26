@@ -29,6 +29,10 @@ export default function Share() {
     setAuthToken(localStorage.getItem("auth_token"));
   }, []);
 
+  if (!user) {
+    return <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />;
+  }
+
   return (
     <>
       <div data-aos="fade-down" className="flex flex-col items-center gap-2 text-center">
@@ -39,7 +43,7 @@ export default function Share() {
         <Image
           data-aos="flip-up"
           data-aos-duration="2000"
-          src={`/api/image?color=${color}`}
+          src={`/api/users/${user?.talent_id}/image?color=${color}`}
           alt="onchain wrapped"
           width={1200}
           height={630}

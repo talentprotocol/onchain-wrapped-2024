@@ -3,17 +3,17 @@
 import { Metadata } from "next";
 
 type Props = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const color = (await searchParams)?.color;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = (await params).id;
 
   return {
     openGraph: {
       images: [
         {
-          url: `/api/image?color=${color}`,
+          url: `/api/users/${id}/image`,
           width: 1200,
           height: 630,
           alt: "Onchain Wrapped 2024",
