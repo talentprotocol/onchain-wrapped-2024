@@ -24,10 +24,6 @@ export default function ShareImage({ color, user }: ShareImageProps) {
 
   const onchainSince = `Onchain since' ${user?.onchain_since ? new Date(user?.onchain_since).getFullYear() : "-"}`;
 
-  console.log({ user, achievements, highestTransaction, onchainSince });
-
-  console.log({ aa: organizations[color].background });
-
   return (
     <div
       style={{
@@ -35,71 +31,66 @@ export default function ShareImage({ color, user }: ShareImageProps) {
         flexDirection: "column",
         gap: "1.5rem",
         padding: "1.5rem",
-        //backgroundImage: organizations[color].background,
         backgroundColor: "#DDE7EE",
         backgroundPosition: "center",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         fontFamily: "DM Mono, serif",
         fontWeight: "500",
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+        letterSpacing: "1.3px",
+        color: "#32383E"
       }}
     >
       <div style={{ display: "flex", gap: "1.5rem" }}>
-        <div
+        <h1
           style={{
-            width: "303px",
-            height: "128px",
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
             justifyContent: "center",
-            padding: "1.5rem",
+            gap: "-0.5rem",
+            margin: 0,
+            padding: "0 2.5rem",
             border: "2px solid #32383E",
             borderRadius: "2rem",
-            backgroundColor: "#32383E"
+            backgroundColor: "#32383E",
+            color: "#FFFFFF",
+            fontSize: "2.25rem",
+            letterSpacing: "initial"
           }}
         >
-          <h1
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "-0.5rem",
-              fontSize: "2.25rem",
-              color: "white",
-              fontFamily: "DM Mono, serif"
-            }}
-          >
-            <span>
-              onchain
-              <span style={{ color: organizations[color].color }}>20</span>
-            </span>
-            <span>
-              wrapped
-              <span style={{ color: organizations[color].color }}>24</span>
-            </span>
-          </h1>
-        </div>
+          <span>
+            onchain
+            <span style={{ color: organizations[color].color }}>20</span>
+          </span>
+          <span>
+            wrapped
+            <span style={{ color: organizations[color].color }}>24</span>
+          </span>
+        </h1>
         <div
           style={{
-            width: "825px",
+            flex: 1,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "1rem",
             padding: "1.5rem",
             border: "2px solid white",
             borderRadius: "2rem",
             fontSize: "1.5rem",
-            fontWeight: "300",
             background:
               "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
             backdropFilter: "blur(10px)",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
           }}
         >
-          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
             {user?.image_url && (
-              <div style={{ width: "80px", height: "80px", backgroundColor: "red", borderRadius: "1.5rem" }}></div>
+              <img
+                src={user?.image_url}
+                alt=""
+                style={{ width: "80px", height: "80px", borderRadius: "1.5rem", objectFit: "cover" }}
+              />
             )}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               <span>{user?.ens ?? "-"}</span>
@@ -107,15 +98,15 @@ export default function ShareImage({ color, user }: ShareImageProps) {
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.5rem" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <span style={{ fontWeight: "300" }}>Most active on</span>
               <span>{highestTransaction.label}</span>
-            </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <span style={{ fontWeight: "300" }}>With</span>
               <span>{highestTransaction.value}</span>
               <span style={{ fontWeight: "300" }}>transactions</span>
-            </span>
+            </div>
           </div>
         </div>
       </div>
@@ -124,7 +115,6 @@ export default function ShareImage({ color, user }: ShareImageProps) {
           <div
             style={{
               width: "564px",
-              height: "225px",
               display: "flex",
               flexDirection: "column",
               gap: "0.5rem",
@@ -145,9 +135,8 @@ export default function ShareImage({ color, user }: ShareImageProps) {
                   border: "2px solid #32383E",
                   borderRadius: "2rem",
                   backgroundColor: "#32383E",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  letterSpacing: "0.05em"
+                  color: "#FFFFFF",
+                  fontSize: "0.875rem"
                 }}
               >
                 {organizations["talent"].role}
@@ -160,43 +149,37 @@ export default function ShareImage({ color, user }: ShareImageProps) {
                   background:
                     "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
                   backdropFilter: "blur(10px)",
-                  fontSize: "0.875rem",
-                  letterSpacing: "0.05em"
+                  fontSize: "0.875rem"
                 }}
               >
                 {`Powered By ${organizations["talent"].name}`}
               </span>
             </div>
             <div style={{ display: "flex", gap: "1.5rem" }}>
-              <span
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
+                  {achievements["talent"][0].value}
+                </span>
+                <span>{achievements["talent"][0].title}</span>
+              </div>
+              <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                  borderRight: "2px solid #32383E",
-                  color: "#32383E"
+                  border: "5px solid transparent",
+                  backgroundImage: "radial-gradient(circle, #36363620 2px, transparent 3px)",
+                  backgroundSize: "10px 10px"
                 }}
-              >
-                <span style={{ fontSize: "3rem", fontWeight: "400" }}>{achievements["talent"][0].value}</span>
-                <span style={{ letterSpacing: "0.05em" }}>{achievements["talent"][0].title}</span>
-              </span>
-              <span
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                  color: "#32383E"
-                }}
-              >
-                <span style={{ fontSize: "3rem", fontWeight: "400" }}>{achievements["talent"][1].value}</span>
-                <span style={{ letterSpacing: "0.05em" }}>{achievements["talent"][1].title}</span>
-              </span>
+              />
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
+                  {achievements["talent"][1].value}
+                </span>
+                <span>{achievements["talent"][1].title}</span>
+              </div>
             </div>
           </div>
           <div
             style={{
               width: "564px",
-              height: "225px",
               display: "flex",
               flexDirection: "column",
               alignItems: "flex-start",
@@ -218,9 +201,8 @@ export default function ShareImage({ color, user }: ShareImageProps) {
                   border: "2px solid #32383E",
                   borderRadius: "2rem",
                   backgroundColor: "#32383E",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  letterSpacing: "0.05em"
+                  color: "#FFFFFF",
+                  fontSize: "0.875rem"
                 }}
               >
                 {organizations["base"].role}
@@ -233,45 +215,39 @@ export default function ShareImage({ color, user }: ShareImageProps) {
                   background:
                     "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
                   backdropFilter: "blur(10px)",
-                  fontSize: "0.875rem",
-                  letterSpacing: "0.05em"
+                  fontSize: "0.875rem"
                 }}
               >
                 {`Powered By ${organizations["base"].name}`}
               </span>
             </div>
             <div style={{ display: "flex", gap: "1.5rem" }}>
-              <span
+              <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
+                  {achievements["base"][0].value}
+                </span>
+                <span>{achievements["base"][0].title}</span>
+              </div>
+              <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                  borderRight: "2px solid #32383E",
-                  color: "#32383E"
+                  border: "5px solid transparent",
+                  backgroundImage: "radial-gradient(circle, #36363620 2px, transparent 3px)",
+                  backgroundSize: "10px 10px"
                 }}
-              >
-                <span style={{ fontSize: "3rem", fontWeight: "400" }}>{achievements["base"][0].value}</span>
-                <span style={{ letterSpacing: "0.05em" }}>{achievements["base"][0].title}</span>
-              </span>
-              <span
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                  color: "#32383E"
-                }}
-              >
-                <span style={{ fontSize: "3rem", fontWeight: "400" }}>{achievements["base"][1].value}</span>
-                <span style={{ letterSpacing: "0.05em" }}>{achievements["base"][1].title}</span>
-              </span>
+              />
+              <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
+                  {achievements["base"][1].value}
+                </span>
+                <span>{achievements["base"][1].title}</span>
+              </div>
             </div>
           </div>
         </div>
         <div style={{ display: "flex", gap: "1.5rem" }}>
           <div
             style={{
-              width: "564px",
-              height: "225px",
+              flex: 1,
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
@@ -291,9 +267,8 @@ export default function ShareImage({ color, user }: ShareImageProps) {
                   border: "2px solid #32383E",
                   borderRadius: "2rem",
                   backgroundColor: "#32383E",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  letterSpacing: "0.05em"
+                  color: "#FFFFFF",
+                  fontSize: "0.875rem"
                 }}
               >
                 {organizations["zerion"].role}
@@ -306,43 +281,37 @@ export default function ShareImage({ color, user }: ShareImageProps) {
                   background:
                     "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
                   backdropFilter: "blur(10px)",
-                  fontSize: "0.875rem",
-                  letterSpacing: "0.05em"
+                  fontSize: "0.875rem"
                 }}
               >
                 {`Powered By ${organizations["zerion"].name}`}
               </span>
             </div>
             <div style={{ display: "flex", gap: "1.5rem" }}>
-              <span
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                  borderRight: "2px solid #32383E",
-                  color: "#32383E"
-                }}
-              >
-                <span style={{ fontSize: "3rem", fontWeight: "400" }}> {achievements["zerion"][0].value}</span>
-                <span style={{ letterSpacing: "0.05em" }}>{achievements["zerion"][0].title}</span>
+              <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
+                  {achievements["zerion"][0].value}
+                </span>
+                <span>{achievements["zerion"][0].title}</span>
               </span>
-              <span
+              <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                  color: "#32383E"
+                  border: "5px solid transparent",
+                  backgroundImage: "radial-gradient(circle, #36363620 2px, transparent 3px)",
+                  backgroundSize: "10px 10px"
                 }}
-              >
-                <span style={{ fontSize: "3rem", fontWeight: "400" }}> {achievements["zerion"][1].value}</span>
-                <span style={{ letterSpacing: "0.05em" }}>{achievements["zerion"][1].title}</span>
+              />
+              <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
+                  {achievements["zerion"][1].value}
+                </span>
+                <span>{achievements["zerion"][1].title}</span>
               </span>
             </div>
           </div>
           <div
             style={{
-              width: "564px",
-              height: "225px",
+              flex: 1,
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
@@ -362,9 +331,8 @@ export default function ShareImage({ color, user }: ShareImageProps) {
                   border: "2px solid #32383E",
                   borderRadius: "2rem",
                   backgroundColor: "#32383E",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  letterSpacing: "0.05em"
+                  color: "#FFFFFF",
+                  fontSize: "0.875rem"
                 }}
               >
                 {organizations["zora"].role}
@@ -377,36 +345,31 @@ export default function ShareImage({ color, user }: ShareImageProps) {
                   background:
                     "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
                   backdropFilter: "blur(10px)",
-                  fontSize: "0.875rem",
-                  letterSpacing: "0.05em"
+                  fontSize: "0.875rem"
                 }}
               >
                 {`Powered By ${organizations["zora"].name}`}
               </span>
             </div>
             <div style={{ display: "flex", gap: "1.5rem" }}>
-              <span
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                  borderRight: "2px solid #32383E",
-                  color: "#32383E"
-                }}
-              >
-                <span style={{ fontSize: "3rem", fontWeight: "400" }}>{achievements["zora"][0].value}</span>
-                <span style={{ letterSpacing: "0.05em" }}>{achievements["zora"][0].title}</span>
+              <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
+                  {achievements["zora"][0].value}
+                </span>
+                <span>{achievements["zora"][0].title}</span>
               </span>
-              <span
+              <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                  color: "#32383E"
+                  border: "5px solid transparent",
+                  backgroundImage: "radial-gradient(circle, #36363620 2px, transparent 3px)",
+                  backgroundSize: "10px 10px"
                 }}
-              >
-                <span style={{ fontSize: "3rem", fontWeight: "400" }}>{achievements["zora"][1].value}</span>
-                <span style={{ letterSpacing: "0.05em" }}>{achievements["zora"][1].title}</span>
+              />
+              <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
+                  {achievements["zora"][1].value}
+                </span>
+                <span>{achievements["zora"][1].title}</span>
               </span>
             </div>
           </div>

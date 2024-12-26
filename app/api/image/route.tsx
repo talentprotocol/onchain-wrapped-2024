@@ -1,14 +1,16 @@
+import { promises as fsPromises } from "fs";
 import { ImageResponse } from "next/og";
+import path from "path";
 
 import ShareImage from "@/app/components/elements/share-image";
 import { organizations } from "@/app/utils/constants";
-import { UserModel } from "@/models/user.model";
+import type { UserModel } from "@/models/user.model";
 
 const mockUserData: UserModel = {
   id: 1,
   talent_id: 1001,
   builder_score: 87,
-  image_url: "https://example.com/images/user1.jpg",
+  image_url: "https://gratisography.com/wp-content/uploads/2024/10/gratisography-cool-cat-800x525.jpg",
   credentials_count: 5,
   github_contributions: 120,
   ens: "user.eth",
@@ -56,19 +58,40 @@ const mockUserData: UserModel = {
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const color = (searchParams.get("color") ?? "talent") as keyof typeof organizations;
 
-  const color = searchParams.get("color") as keyof typeof organizations;
+  const lightFontPath = path.join(process.cwd(), "public/fonts/dm-mono-light.ttf");
+  const regularFontPath = path.join(process.cwd(), "public/fonts/dm-mono-regular.ttf");
+  const mediumFontPath = path.join(process.cwd(), "public/fonts/dm-mono-medium.ttf");
 
-  // Validate if the color exists
-  if (!color || !organizations[color]) {
-    console.error("Invalid or missing color parameter.");
-    return new Response("Invalid or missing color parameter", { status: 400 });
-  }
+  const lightFontData = await fsPromises.readFile(lightFontPath);
+  const regularFontData = await fsPromises.readFile(regularFontPath);
+  const mediumFontData = await fsPromises.readFile(mediumFontPath);
 
   try {
     return new ImageResponse(<ShareImage color={color} user={mockUserData} />, {
       width: 1200,
-      height: 675
+      height: 675,
+      fonts: [
+        {
+          name: "DM Mono",
+          data: lightFontData,
+          style: "normal",
+          weight: 300
+        },
+        {
+          name: "DM Mono",
+          data: regularFontData,
+          style: "normal",
+          weight: 400
+        },
+        {
+          name: "DM Mono",
+          data: mediumFontData,
+          style: "normal",
+          weight: 500
+        }
+      ]
     });
   } catch (error) {
     console.error("Error generating image:", error);
