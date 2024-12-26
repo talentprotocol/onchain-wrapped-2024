@@ -1,6 +1,5 @@
 import { getAchievements, organizations } from "@/app/utils/constants";
 import type { UserModel } from "@/models/user.model";
-import Image from "next/image";
 
 type ShareImageProps = {
   color: keyof typeof organizations;
@@ -87,10 +86,12 @@ export default function ShareImage({ color, user }: ShareImageProps) {
         >
           <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
             {user?.image_url && (
-              <Image
-                src={user?.image_url}
-                alt=""
-                style={{ width: "80px", height: "80px", borderRadius: "1.5rem", objectFit: "cover" }}
+              <img
+                src={user.image_url}
+                width={80}
+                height={80}
+                alt="Image of the user"
+                style={{ borderRadius: "1.5rem", objectFit: "cover" }}
               />
             )}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>

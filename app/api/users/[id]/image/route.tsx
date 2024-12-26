@@ -12,6 +12,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const { searchParams } = new URL(request.url);
   const { id } = await params;
   const talentId: number = parseInt(id) || 0;
+
   const color = (searchParams.get("color") ?? "talent") as keyof typeof organizations;
 
   const supabase = await createSupabaseServerClient();
@@ -63,8 +64,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
         }
       ]
     });
-  } catch (error) {
-    console.error("Error generating image:", error);
-    return new Response("Failed to generate image", { status: 500 });
+  } catch (e) {
+    const error = e as Error;
+    rollbarError("Unable to generate image", error);
+    return NextResponse.json({ error: "Unable to generate image" }, { status: 400 });
   }
 }
