@@ -9,7 +9,7 @@ import ButtonCopy from "@/app/components/elements/button-copy";
 import ButtonFarcaster from "@/app/components/elements/button-farcaster";
 import ButtonRefresh from "@/app/components/elements/button-refresh";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
-import ButtonZoraMint from "@/app/components/elements/button-zora-mint";
+import ButtonZoraPost from "@/app/components/elements/button-zora-post";
 import { useGetUser } from "@/app/hooks/useUser";
 import { organizations } from "@/app/utils/constants";
 import Link from "next/link";
@@ -34,7 +34,7 @@ export default function Share() {
   useEffect(() => {
     setAuthToken(localStorage.getItem("auth_token"));
     refetchUser();
-  }, []);
+  }, [refetchUser]);
 
   if (!user || loading) {
     return <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />;
@@ -77,23 +77,22 @@ export default function Share() {
       <div data-aos="fade-right" className="w-full flex flex-col gap-2">
         <ButtonFarcaster />
         <ButtonTwitter />
-        {!!authToken &&
-          user &&
-          (user.zora_post_url ? (
-            <Link href={user.zora_post_url} className="w-full">
-              <Button variant="secondary" className="w-full">
-                <Image src={Zora} alt="" width={16} height={16} />
-                Check on Zora
-              </Button>
-            </Link>
-          ) : (
-            <ButtonZoraMint
-              authToken={authToken}
-              talentId={user.talent_id}
-              setLoading={setLoading}
-              refetchUser={refetchUser}
-            />
-          ))}
+        {user && user.zora_post_url && (
+          <Link href={user.zora_post_url} className="w-full">
+            <Button variant="secondary" className="w-full">
+              <Image src={Zora} alt="" width={16} height={16} />
+              Mint on Zora
+            </Button>
+          </Link>
+        )}
+        {!!authToken && user && !mintedOnZora && (
+          <ButtonZoraPost
+            authToken={authToken}
+            talentId={user.talent_id}
+            setLoading={setLoading}
+            refetchUser={refetchUser}
+          />
+        )}
         {!!authToken && user && !mintedOnZora && (
           <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
         )}
