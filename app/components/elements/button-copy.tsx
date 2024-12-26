@@ -7,13 +7,20 @@ import Copy from "@/app/assets/icons/copy.svg";
 import { Button } from "@/app/components/atoms";
 import { useToast } from "@/app/hooks/use-toast";
 
-export default function ButtonCopy({ color }: { color: string | null }) {
+export default function ButtonCopy({ imageUrl }: { imageUrl: string }) {
   const { toast } = useToast();
 
-  const copyImageToClipboard = useCallback(() => {
-    navigator.clipboard.writeText(`/api/image?color=${color ?? "talent"}`);
-    toast({ title: "Copied!", description: "Copied image to clipboard" });
-  }, [color, toast]);
+  const copyImageToClipboard = useCallback(async () => {
+    const data = await fetch(imageUrl);
+    const blob = await data.blob();
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        [blob.type]: blob
+      })
+    ]);
+
+    toast({ title: "Success!", description: "Image copied to clipboard" });
+  }, [imageUrl, toast]);
 
   return (
     <Button onClick={copyImageToClipboard} className="w-full flex items-center gap-2">

@@ -16,6 +16,7 @@ type OrganizationKey = keyof typeof organizations;
 export default function Share() {
   const user = useGetUser();
   const [color, setColor] = useState<OrganizationKey>("talent");
+  const [loading, setLoading] = useState<boolean>(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
 
   const getButtonBorder = useCallback(
@@ -29,7 +30,7 @@ export default function Share() {
     setAuthToken(localStorage.getItem("auth_token"));
   }, []);
 
-  if (!user) {
+  if (!user || loading) {
     return <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />;
   }
 
@@ -70,8 +71,10 @@ export default function Share() {
       <div data-aos="fade-right" className="w-full flex flex-col gap-2">
         <ButtonFarcaster />
         <ButtonTwitter />
-        <ButtonCopy color={color} />
-        {!!authToken && user && <ButtonRefresh authToken={authToken} talentId={user.talent_id} />}
+        {user && <ButtonCopy imageUrl={`/api/users/${user?.talent_id}/image?color=${color}`} />}
+        {!!authToken && user && (
+          <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
+        )}
       </div>
     </>
   );
