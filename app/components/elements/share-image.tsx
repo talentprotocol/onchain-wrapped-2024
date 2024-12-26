@@ -2,11 +2,22 @@ import { getAchievements, organizations } from "@/app/utils/constants";
 import type { UserModel } from "@/models/user.model";
 
 type ShareImageProps = {
+  background: Buffer;
+  cardBackground: Buffer;
+  cardBackgroundBottom: Buffer;
+  cardBackgroundTop: Buffer;
   color: keyof typeof organizations;
   user: UserModel;
 };
 
-export default function ShareImage({ color, user }: ShareImageProps) {
+export default function ShareImage({
+  background,
+  cardBackground,
+  cardBackgroundBottom,
+  cardBackgroundTop,
+  color,
+  user
+}: ShareImageProps) {
   const achievements = getAchievements(user);
 
   const transactions = [
@@ -31,15 +42,14 @@ export default function ShareImage({ color, user }: ShareImageProps) {
         flexDirection: "column",
         gap: "1.5rem",
         padding: "1.5rem",
-        backgroundColor: "#DDE7EE",
-        backgroundPosition: "center",
+        color: "#32383E",
+        backgroundImage: `url(data:image/png;base64,${background.toString("base64")})`,
         backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
         fontFamily: "DM Mono, serif",
         fontWeight: "500",
         textTransform: "uppercase",
-        letterSpacing: "1.3px",
-        color: "#32383E"
+        letterSpacing: "1.3px"
       }}
     >
       <div style={{ display: "flex", gap: "1.5rem" }}>
@@ -117,16 +127,16 @@ export default function ShareImage({ color, user }: ShareImageProps) {
           <div
             style={{
               width: "564px",
-              height: "225px",
+              height: "228px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
               padding: "1.5rem",
               border: "2px solid white",
               borderRadius: "2rem",
-              background:
-                "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
-              backdropFilter: "blur(10px)",
+              background: `url(data:image/png;base64,${cardBackgroundTop.toString("base64")})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
             }}
           >
@@ -182,16 +192,16 @@ export default function ShareImage({ color, user }: ShareImageProps) {
           <div
             style={{
               width: "564px",
-              height: "225px",
+              height: "228px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
               padding: "1.5rem",
               border: "2px solid white",
               borderRadius: "2rem",
-              background:
-                "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
-              backdropFilter: "blur(10px)",
+              background: `url(data:image/png;base64,${cardBackground.toString("base64")})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
             }}
           >
@@ -249,16 +259,16 @@ export default function ShareImage({ color, user }: ShareImageProps) {
           <div
             style={{
               flex: 1,
-              height: "225px",
+              height: "228px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
               padding: "1.5rem",
               border: "2px solid white",
               borderRadius: "2rem",
-              background:
-                "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
-              backdropFilter: "blur(10px)",
+              background: `url(data:image/png;base64,${cardBackground.toString("base64")})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
             }}
           >
@@ -314,16 +324,16 @@ export default function ShareImage({ color, user }: ShareImageProps) {
           <div
             style={{
               flex: 1,
-              height: "225px",
+              height: "228px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
               padding: "1.5rem",
               border: "2px solid white",
               borderRadius: "2rem",
-              background:
-                "linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))",
-              backdropFilter: "blur(10px)",
+              background: `url(data:image/png;base64,${cardBackgroundBottom.toString("base64")})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
             }}
           >

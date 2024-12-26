@@ -34,39 +34,63 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const lightFontPath = path.join(process.cwd(), "public/fonts/dm-mono-light.ttf");
   const regularFontPath = path.join(process.cwd(), "public/fonts/dm-mono-regular.ttf");
   const mediumFontPath = path.join(process.cwd(), "public/fonts/dm-mono-medium.ttf");
+  const backgroundPath = path.join(process.cwd(), `public/images/share-pattern-${organizations[color].bg}.png`);
+  const cardBackgroundPath = path.join(process.cwd(), `public/images/card-bg.png`);
+  const cardBackgroundTopPath = path.join(process.cwd(), `public/images/card-bg-top-${organizations[color].bg}.png`);
+  const cardBackgroundBottomPath = path.join(
+    process.cwd(),
+    `public/images/card-bg-bottom-${organizations[color].bg}.png`
+  );
 
   const lightFontData = await fsPromises.readFile(lightFontPath);
   const regularFontData = await fsPromises.readFile(regularFontPath);
   const mediumFontData = await fsPromises.readFile(mediumFontPath);
+  const backgroundData = await fsPromises.readFile(backgroundPath);
+  const cardBackgroundData = await fsPromises.readFile(cardBackgroundPath);
+  const cardBackgroundTopData = await fsPromises.readFile(cardBackgroundTopPath);
+  const cardBackgroundBottomData = await fsPromises.readFile(cardBackgroundBottomPath);
 
   try {
-    return new ImageResponse(<ShareImage color={color} user={user} />, {
-      width: 1200,
-      height: 675,
-      fonts: [
-        {
-          name: "DM Mono",
-          data: lightFontData,
-          style: "normal",
-          weight: 300
-        },
-        {
-          name: "DM Mono",
-          data: regularFontData,
-          style: "normal",
-          weight: 400
-        },
-        {
-          name: "DM Mono",
-          data: mediumFontData,
-          style: "normal",
-          weight: 500
-        }
-      ]
-    });
+    return new ImageResponse(
+      (
+        <ShareImage
+          background={backgroundData}
+          cardBackground={cardBackgroundData}
+          cardBackgroundBottom={cardBackgroundBottomData}
+          cardBackgroundTop={cardBackgroundTopData}
+          color={color}
+          user={user}
+        />
+      ),
+      {
+        width: 1200,
+        height: 675,
+        fonts: [
+          {
+            name: "DM Mono",
+            data: lightFontData,
+            style: "normal",
+            weight: 300
+          },
+          {
+            name: "DM Mono",
+            data: regularFontData,
+            style: "normal",
+            weight: 400
+          },
+          {
+            name: "DM Mono",
+            data: mediumFontData,
+            style: "normal",
+            weight: 500
+          }
+        ]
+      }
+    );
   } catch (e) {
     const error = e as Error;
-    rollbarError("Unable to generate image", error);
-    return NextResponse.json({ error: "Unable to generate image" }, { status: 400 });
+    rollbarError("Failed to generate image", error);
+    console.error("Error generating image:", error);
+    return NextResponse.json({ error: "Failed to generate image" }, { status: 500 });
   }
 }
