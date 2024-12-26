@@ -8,7 +8,7 @@ import { Button } from "@/app/components/atoms";
 import { useGetUser } from "@/app/hooks/useUser";
 
 export default function ButtonFarcaster() {
-  const user = useGetUser();
+  const { user } = useGetUser();
 
   const shareOnFarcaster = useCallback(() => {
     const text = encodeURIComponent("Check out my Onchain Wrapped 2024 by Talent Protocol!");

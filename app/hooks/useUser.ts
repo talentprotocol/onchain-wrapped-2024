@@ -46,5 +46,5 @@ export function useGetUser() {
     setUser(localStorageUser);
   }, [fetchUser, router, talentId]);
 
-  return user;
+  return { user, fetchUser };
 }

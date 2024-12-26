@@ -15,7 +15,7 @@ type YourBuilderYearProps = {
 const animations = ["right", "up", "left", "down"];
 
 export default function YourBuilderYear({ organization, nextPage }: YourBuilderYearProps) {
-  const user = useGetUser();
+  const { user } = useGetUser();
 
   const achievements = useMemo(() => getAchievements(user)[organization], [organization, user]);
   const org = useMemo(() => organizations[organization], [organization]);

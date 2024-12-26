@@ -1,4 +1,4 @@
-import { pinFileWithPinata, pinJsonWithPinata } from "@/utils/pinata/pin";
+import { pinJsonWithPinata } from "@/utils/pinata/pin";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { createCreatorClient, makeMediaTokenMetadata } from "@zoralabs/protocol-sdk";
 import { createPublicClient, createWalletClient, http, PublicClient } from "viem";
@@ -11,7 +11,7 @@ const ZORA_COLLECTION_ADDRESS = process.env.ZORA_COLLECTION_ADDRESS!;
 const BASE_RPC_URL = process.env.BASE_RPC_URL!;
 const ZORA_WALLET_PK = process.env.ZORA_WALLET_PK!;
 
-export async function mintOnZora(talentId: number, file: File) {
+export async function mintOnZora(talentId: number) {
   const { data: user, error: getUserError } = await supabase
     .from("users")
     .select()
@@ -30,11 +30,17 @@ export async function mintOnZora(talentId: number, file: File) {
     return user.zora_post_url;
   }
 
-  const mediaFileIpfsUrl = await pinFileWithPinata(file);
-  const metadataJson = makeMediaTokenMetadata({
+  const fileName = `Onchain Wrapped - ${talentId}`;
+  // const image = await fetch(`https://www.builderscore.xyz/api/users/${talentId}/image`);
+  // const imageBlob = await image.blob();
+  // const file = new File([imageBlob], fileName, { type: imageBlob.type });
+
+  const mediaFileIpfsUrl = `https://www.builderscore.xyz/api/users/${talentId}/image`;
+  const metadataJson = await makeMediaTokenMetadata({
     mediaUrl: mediaFileIpfsUrl,
-    name: `Onchain Wrapped - ${talentId}`
+    name: fileName
   });
+
   const jsonMetadataUri = await pinJsonWithPinata(metadataJson, talentId);
 
   const rpcUrl = http(BASE_RPC_URL);
@@ -72,6 +78,7 @@ export async function mintOnZora(talentId: number, file: File) {
   });
 
   const { request } = await publicClient.simulateContract(createParameters);
+
   const hash = await walletClient.writeContract(request);
   const createReceipt = await publicClient.waitForTransactionReceipt({ hash });
 
@@ -79,18 +86,21 @@ export async function mintOnZora(talentId: number, file: File) {
     throw new Error(`Unable to create transaction: ${hash}`);
   }
 
-  const zoraPostUrl = `https://zora.co/collect/base:${ZORA_COLLECTION_ADDRESS}/${newTokenId}?referrer=${account.address}`;
+  const tokenId = Number(newTokenId);
+
+  const zoraPostUrl = `https://zora.co/collect/base:${ZORA_COLLECTION_ADDRESS}/${tokenId}?referrer=${account.address}`;
 
   const { error } = await supabase
     .from("users")
     .update({
       zora_post_url: zoraPostUrl,
       zora_mint_tx_hash: hash,
-      zora_token_id: newTokenId
+      zora_token_id: tokenId
     })
     .eq("talent_id", talentId);
 
   if (error) {
+    console.error("Error", error);
     throw error;
   }
 

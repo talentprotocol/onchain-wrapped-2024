@@ -29,4 +29,5 @@ export interface UserModel {
   pnl_calculated_at: Date | undefined;
   transactions_calculated_at: Date | undefined;
   zora_calculated_at: Date | undefined;
+  zora_post_url: string | undefined;
 }

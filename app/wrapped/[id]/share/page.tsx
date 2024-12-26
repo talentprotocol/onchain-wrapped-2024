@@ -8,13 +8,15 @@ import ButtonCopy from "@/app/components/elements/button-copy";
 import ButtonFarcaster from "@/app/components/elements/button-farcaster";
 import ButtonRefresh from "@/app/components/elements/button-refresh";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
+import ButtonZoraMint from "@/app/components/elements/button-zora-mint";
 import { useGetUser } from "@/app/hooks/useUser";
 import { organizations } from "@/app/utils/constants";
+import Link from "next/link";
 
 type OrganizationKey = keyof typeof organizations;
 
 export default function Share() {
-  const user = useGetUser();
+  const { user, fetchUser: refetchUser } = useGetUser();
   const [color, setColor] = useState<OrganizationKey>("talent");
   const [loading, setLoading] = useState<boolean>(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
@@ -71,10 +73,26 @@ export default function Share() {
       <div data-aos="fade-right" className="w-full flex flex-col gap-2">
         <ButtonFarcaster />
         <ButtonTwitter />
-        {user && <ButtonCopy imageUrl={`/api/users/${user?.talent_id}/image?color=${color}`} />}
+        {!!authToken &&
+          user &&
+          (user.zora_post_url ? (
+            <Link href={user.zora_post_url} className="w-full">
+              <Button variant="default" className="w-full">
+                Mint on Zora
+              </Button>
+            </Link>
+          ) : (
+            <ButtonZoraMint
+              authToken={authToken}
+              talentId={user.talent_id}
+              setLoading={setLoading}
+              refetchUser={refetchUser}
+            />
+          ))}
         {!!authToken && user && (
           <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
         )}
+        {user && <ButtonCopy imageUrl={`/api/users/${user?.talent_id}/image?color=${color}`} />}
       </div>
     </>
   );

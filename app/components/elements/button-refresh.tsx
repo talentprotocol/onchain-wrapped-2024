@@ -29,7 +29,7 @@ export default function ButtonRefresh({
     if (result.ok) {
       router.push(`/loading_wrapped/${talentId}`);
     }
-  }, [authToken, router, talentId]);
+  }, [authToken, router, talentId, setLoading]);
 
   return (
     <Button onClick={refreshData} className="w-full flex items-center gap-2 mt-4">
