@@ -1,10 +1,5 @@
 import type { UserModel } from "@/models/user.model";
 
-import SharePatternBlue from "../assets/images/share-pattern-blue.svg";
-import SharePatternGreen from "../assets/images/share-pattern-green.svg";
-import SharePatternPurple from "../assets/images/share-pattern-purple.svg";
-import SharePatternRed from "../assets/images/share-pattern-red.svg";
-
 type Achievement = {
   title: string;
   value?: number | string;
@@ -15,7 +10,7 @@ type Organization = {
   name: string;
   role: string;
   gradient: string;
-  background: string;
+  bg: string;
   color: string;
 };
 
@@ -25,7 +20,7 @@ export const organizations: Record<"talent" | "base" | "zerion" | "zora", Organi
     name: "Talent Protocol",
     role: "Builder",
     gradient: "from-chart-1 to-chart-2",
-    background: `url(${SharePatternRed.src})`,
+    bg: "red",
     color: "#E9D022"
   },
   base: {
@@ -33,7 +28,7 @@ export const organizations: Record<"talent" | "base" | "zerion" | "zora", Organi
     name: "Base",
     role: "Developer",
     gradient: "from-chart-3 to-chart-4",
-    background: `url(${SharePatternPurple.src})`,
+    bg: "purple",
     color: "#826AEE"
   },
   zerion: {
@@ -41,16 +36,16 @@ export const organizations: Record<"talent" | "base" | "zerion" | "zora", Organi
     name: "Zerion",
     role: "Degen",
     gradient: "from-chart-5 to-chart-6",
-    background: `url(${SharePatternGreen.src})`,
-    color: "#07F49E"
+    bg: "green",
+    color: "#03F3BF"
   },
   zora: {
     index: 3,
     name: "Zora",
     role: "Creator",
     gradient: "from-chart-7 to-chart-8",
-    background: `url(${SharePatternBlue.src})`,
-    color: "#45CAFF"
+    bg: "blue",
+    color: "#FF1B6B"
   }
 };
 
