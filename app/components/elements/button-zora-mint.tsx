@@ -2,8 +2,10 @@
 
 import { useCallback } from "react";
 
+import Zora from "@/app/assets/icons/zora.svg";
 import { Button } from "@/app/components/atoms";
 import { toast } from "@/app/hooks/use-toast";
+import Image from "next/image";
 
 export default function ButtonZoraMint({
   authToken,
@@ -38,6 +40,7 @@ export default function ButtonZoraMint({
 
   return (
     <Button variant="secondary" onClick={refreshData} className="w-full flex items-center gap-2">
+      <Image src={Zora} alt="" width={16} height={16} />
       <span>Mint on Zora</span>
     </Button>
   );

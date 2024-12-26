@@ -46,5 +46,5 @@ export function useGetUser() {
     setUser(localStorageUser);
   }, [fetchUser, router, talentId]);
 
-  return { user, fetchUser };
+  return { user, fetchUser, mintedOnZora: !!user?.zora_post_url };
 }

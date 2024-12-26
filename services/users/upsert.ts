@@ -17,6 +17,11 @@ export async function upsertUserFromAuthToken(authToken: string) {
     throw getUserError;
   }
 
+  // Don't update already minted users
+  if (!!user.zora_post_url) {
+    return user;
+  }
+
   const wrappedData = {
     builder_score: onchainWrapped.score,
     image_url: onchainWrapped.image_url,

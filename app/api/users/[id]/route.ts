@@ -80,6 +80,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
+  if (user && !!user.zora_post_url) {
+    return NextResponse.json({
+      user
+    });
+  }
+
   try {
     const refreshedUser = await upsertUserFromAuthToken(authToken);
 

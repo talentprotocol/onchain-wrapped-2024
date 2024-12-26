@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import Zora from "@/app/assets/icons/zora.svg";
 import { Button } from "@/app/components/atoms";
 import ButtonCopy from "@/app/components/elements/button-copy";
 import ButtonFarcaster from "@/app/components/elements/button-farcaster";
@@ -16,7 +17,7 @@ import Link from "next/link";
 type OrganizationKey = keyof typeof organizations;
 
 export default function Share() {
-  const { user, fetchUser: refetchUser } = useGetUser();
+  const { user, fetchUser: refetchUser, mintedOnZora } = useGetUser();
   const [color, setColor] = useState<OrganizationKey>("talent");
   const [loading, setLoading] = useState<boolean>(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
@@ -32,6 +33,7 @@ export default function Share() {
 
   useEffect(() => {
     setAuthToken(localStorage.getItem("auth_token"));
+    refetchUser();
   }, []);
 
   if (!user || loading) {
@@ -79,8 +81,9 @@ export default function Share() {
           user &&
           (user.zora_post_url ? (
             <Link href={user.zora_post_url} className="w-full">
-              <Button variant="default" className="w-full">
-                Mint on Zora
+              <Button variant="secondary" className="w-full">
+                <Image src={Zora} alt="" width={16} height={16} />
+                Check on Zora
               </Button>
             </Link>
           ) : (
@@ -91,7 +94,7 @@ export default function Share() {
               refetchUser={refetchUser}
             />
           ))}
-        {!!authToken && user && (
+        {!!authToken && user && !mintedOnZora && (
           <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
         )}
         <ButtonCopy imageUrl={imageUrl} />
