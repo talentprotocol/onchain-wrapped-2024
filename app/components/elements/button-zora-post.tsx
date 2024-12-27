@@ -10,11 +10,13 @@ import Image from "next/image";
 export default function ButtonZoraPost({
   authToken,
   talentId,
+  disabled,
   setLoading,
   refetchUser
 }: {
   authToken: string;
   talentId: number;
+  disabled: boolean;
   setLoading: (loading: boolean) => void;
   refetchUser: () => void;
 }) {
@@ -38,8 +40,10 @@ export default function ButtonZoraPost({
     }
   }, [authToken, refetchUser, setLoading, talentId]);
 
+  console.log("disabled", disabled);
+
   return (
-    <Button variant="secondary" onClick={refreshData} className="w-full flex items-center gap-2">
+    <Button variant="secondary" onClick={refreshData} disabled={disabled} className="w-full flex items-center gap-2">
       <Image src={Zora} alt="" width={16} height={16} />
       <span>Post on Zora</span>
     </Button>

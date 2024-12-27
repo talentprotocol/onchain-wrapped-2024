@@ -77,8 +77,8 @@ export default function Share() {
       <div data-aos="fade-right" className="w-full flex flex-col gap-2">
         <ButtonFarcaster />
         <ButtonTwitter />
-        {user && user.zora_post_url && (
-          <Link href={user.zora_post_url} className="w-full">
+        {user && mintedOnZora && (
+          <Link href={user?.zora_post_url || "#"} target="_blank" className="w-full">
             <Button variant="secondary" className="w-full">
               <Image src={Zora} alt="" width={16} height={16} />
               Mint on Zora
@@ -86,15 +86,16 @@ export default function Share() {
           </Link>
         )}
         {!!authToken && user && !mintedOnZora && (
-          <ButtonZoraPost
-            authToken={authToken}
-            talentId={user.talent_id}
-            setLoading={setLoading}
-            refetchUser={refetchUser}
-          />
-        )}
-        {!!authToken && user && !mintedOnZora && (
-          <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
+          <>
+            <ButtonZoraPost
+              authToken={authToken}
+              talentId={user.talent_id}
+              setLoading={setLoading}
+              refetchUser={refetchUser}
+              disabled={!user.main_wallet}
+            />
+            <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
+          </>
         )}
         <ButtonCopy imageUrl={imageUrl} />
       </div>
