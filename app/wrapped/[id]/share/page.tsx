@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -52,14 +53,20 @@ export default function Share() {
 
   return (
     <>
-      <div data-aos="fade-down" className="flex flex-col items-center gap-2 text-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.4,
+          scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 }
+        }}
+        className="flex flex-col items-center gap-2 text-center"
+      >
         <h1 className="text-2xl font-semibold">Onchain Wrapped 2024</h1>
         <p className="font-normal">Share your 2024 Onchain Wrapped, and get the recognition you deserve.</p>
-      </div>
+      </motion.div>
       <div className="w-full sm:w-screen flex flex-1 flex-col items-center justify-around gap-8">
         <Image
-          data-aos="flip-up"
-          data-aos-duration="2000"
           src={imageUrl}
           alt="onchain wrapped"
           width={1200}
@@ -67,7 +74,7 @@ export default function Share() {
           className="w-full sm:w-[500px] object-contain border rounded-2xl shadow"
           priority
         />
-        <div data-aos="fade-up" className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           {Object.values(OrgEnum).map(key => (
             <Button
               key={key}
@@ -83,7 +90,7 @@ export default function Share() {
           ))}
         </div>
       </div>
-      <div data-aos="fade-right" className="w-full flex flex-col gap-2">
+      <div className="w-full flex flex-col gap-2">
         <ButtonFarcaster />
         <ButtonTwitter />
         {user && mintedOnZora && (

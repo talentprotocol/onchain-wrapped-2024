@@ -6,8 +6,6 @@ import { Toaster } from "./components/atoms";
 import Wrapper from "./components/elements/wrapper";
 import ReactQueryProvider from "./components/queryClientProvider";
 
-import "aos/dist/aos.css";
-
 import "./globals.css";
 
 const dmMono = DM_Mono({ weight: ["300", "400", "500"], preload: false });
@@ -25,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmMono.className} ${inter.className} antialiased overflow-x-hidden`}>
+      <body className={`${dmMono.className} ${inter.className} antialiased`}>
         <ReactQueryProvider>
           <Suspense>
             <Toaster />
