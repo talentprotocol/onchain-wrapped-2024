@@ -17,11 +17,6 @@ export async function upsertUserFromAuthToken(authToken: string) {
     throw getUserError;
   }
 
-  // Don't update already minted users
-  if (!!user.zora_post_url) {
-    return user;
-  }
-
   const wrappedData = {
     builder_score: onchainWrapped.score,
     image_url: onchainWrapped.image_url,
@@ -35,6 +30,11 @@ export async function upsertUserFromAuthToken(authToken: string) {
   };
 
   if (user) {
+    // Don't update already minted users
+    if (!!user.zora_post_url) {
+      return user;
+    }
+
     const { data: updatedUser, error } = await supabase
       .from("users")
       .update(wrappedData)
