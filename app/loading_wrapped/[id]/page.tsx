@@ -179,34 +179,38 @@ export default function Page() {
           </div>
         ))}
       </div>
-      <div className="w-full flex flex-col gap-3">
-        <Button
-          variant="secondary"
-          onClick={redirectToTalentProtocolIntegrations}
-          className="w-full flex items-center gap-2"
-        >
-          <span>Connect more socials</span>
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={redirectToTalentProtocolWallets}
-          className="w-full flex items-center gap-2"
-        >
-          <span>Add more wallets</span>
-        </Button>
-        {talentId && authToken && !user?.zora_post_url && (
-          <ButtonRefresh
-            authToken={authToken}
-            talentId={Number(talentId)}
-            setLoading={setIsPollingEnabled}
-            disabled={isPollingEnabled}
-          />
-        )}
-        <Link href={`/wrapped/${talentId}/talent`} className="w-full">
-          <Button variant="default" className="w-full" disabled={isPollingEnabled}>
-            Check my 2024 Wrapped
+      <div className="w-full flex flex-col gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button
+            variant="secondary"
+            onClick={redirectToTalentProtocolIntegrations}
+            className="w-full flex items-center gap-2"
+          >
+            <span>Connect more socials</span>
           </Button>
-        </Link>
+          <Button
+            variant="secondary"
+            onClick={redirectToTalentProtocolWallets}
+            className="w-full flex items-center gap-2"
+          >
+            <span>Add more wallets</span>
+          </Button>
+        </div>
+        <div className="flex flex-col gap-2">
+          {talentId && authToken && !user?.zora_post_url && (
+            <ButtonRefresh
+              authToken={authToken}
+              talentId={Number(talentId)}
+              setLoading={setIsPollingEnabled}
+              disabled={isPollingEnabled}
+            />
+          )}
+          <Link href={`/wrapped/${talentId}/builder_score`} className="w-full">
+            <Button variant="default" className="w-full" disabled={isPollingEnabled}>
+              Check my 2024 Wrapped
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

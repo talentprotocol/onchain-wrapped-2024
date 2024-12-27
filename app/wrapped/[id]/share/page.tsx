@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Zora from "@/app/assets/icons/zora.svg";
@@ -9,19 +10,16 @@ import ButtonFarcaster from "@/app/components/elements/button-farcaster";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
 import ButtonZoraPost from "@/app/components/elements/button-zora-post";
 import { useGetUser } from "@/app/hooks/useUser";
-import { organizations } from "@/app/utils/constants";
-import Link from "next/link";
-
-type OrganizationKey = keyof typeof organizations;
+import { organizations, OrgEnum } from "@/app/utils/constants";
 
 export default function Share() {
   const { user, fetchUser: refetchUser, mintedOnZora } = useGetUser();
-  const [color, setColor] = useState<OrganizationKey>("talent");
-  const [mintingOnZora, setMintingOnZora] = useState<boolean>(false);
+  const [color, setColor] = useState(OrgEnum.TALENT);
+  const [mintingOnZora, setMintingOnZora] = useState(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
 
   const getButtonBorder = useCallback(
-    (index: OrganizationKey, type: "inside" | "outside") => {
+    (index: OrgEnum, type: "inside" | "outside") => {
       return color === index ? (type === "inside" ? "border-white" : "border-primary") : "border-background";
     },
     [color]
@@ -35,12 +33,14 @@ export default function Share() {
   }, [refetchUser]);
 
   if (!user) {
-    return <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />;
+    return (
+      <div className="h-24 w-24 mt-6 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />
+    );
   }
 
-  if (!mintingOnZora) {
+  if (mintingOnZora) {
     return (
-      <div className="w-full sm:w-screen h-1/2 flex flex-col items-center justify-around">
+      <div className="flex-1 w-full sm:w-screen flex flex-col items-center justify-around">
         <h1 className="text-2xl font-semibold">Posting your 2024 Onchain Wrapped on Zora...</h1>
         <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />
         <p className="font-semibold">
@@ -56,7 +56,7 @@ export default function Share() {
         <h1 className="text-2xl font-semibold">Share to Earn $TALENT</h1>
         <p className="font-normal">Post on Farcaster and tag @Talentmate.eth for a little surprise.</p>
       </div>
-      <div className="w-full sm:w-screen h-full flex flex-col items-center justify-around">
+      <div className="w-full sm:w-screen flex flex-1 flex-col items-center justify-around gap-8">
         <Image
           data-aos="flip-up"
           data-aos-duration="2000"
@@ -68,17 +68,16 @@ export default function Share() {
           priority
         />
         <div data-aos="fade-up" className="flex items-center gap-2">
-          {Object.keys(organizations).map(key => (
+          {Object.values(OrgEnum).map(key => (
             <Button
               key={key}
-              onClick={() => setColor(key as OrganizationKey)}
-              className={`w-10 h-10 p-0 border-2 ${getButtonBorder(key as OrganizationKey, "outside")} rounded-full`}
+              onClick={() => setColor(key)}
+              className={`w-10 h-10 p-0 border-2 ${getButtonBorder(key, "outside")} rounded-full`}
             >
               <div
-                className={`w-full h-full border-2 ${getButtonBorder(
-                  key as OrganizationKey,
-                  "inside"
-                )} rounded-full bg-gradient-to-br ${organizations[key as OrganizationKey].gradient}`}
+                className={`w-full h-full border-2 ${getButtonBorder(key, "inside")} rounded-full bg-gradient-to-br ${
+                  organizations[key].gradient
+                }`}
               ></div>
             </Button>
           ))}

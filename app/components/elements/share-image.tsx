@@ -1,4 +1,4 @@
-import { getAchievements, organizations } from "@/app/utils/constants";
+import { organizations, OrgEnum, screens } from "@/app/utils/constants";
 import type { UserModel } from "@/models/user.model";
 
 type ShareImageProps = {
@@ -6,7 +6,7 @@ type ShareImageProps = {
   cardBackground: Buffer;
   cardBackgroundBottom: Buffer;
   cardBackgroundTop: Buffer;
-  color: keyof typeof organizations;
+  color: OrgEnum;
   user: UserModel;
 };
 
@@ -18,7 +18,15 @@ export default function ShareImage({
   color,
   user
 }: ShareImageProps) {
-  const achievements = getAchievements(user);
+  const organization = organizations[color];
+
+  const achievements = screens.map(screen => {
+    const value = screen.value(user);
+    return {
+      title: screen.label,
+      value: value ? value : "-"
+    };
+  });
 
   const transactions = [
     { label: "Base", value: user?.year_base_transactions ?? 0 },
@@ -71,11 +79,11 @@ export default function ShareImage({
         >
           <span>
             onchain
-            <span style={{ color: organizations[color].color }}>20</span>
+            <span style={{ color: organization.color }}>20</span>
           </span>
           <span>
             wrapped
-            <span style={{ color: organizations[color].color }}>24</span>
+            <span style={{ color: organization.color }}>24</span>
           </span>
         </h1>
         <div
@@ -170,9 +178,9 @@ export default function ShareImage({
             <div style={{ flex: 1, display: "flex", gap: "1.5rem" }}>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
-                  {achievements["talent"][0].value}
+                  {achievements[0].value}
                 </span>
-                <span>{achievements["talent"][0].title}</span>
+                <span>{achievements[0].title}</span>
               </div>
               <div
                 style={{
@@ -183,9 +191,9 @@ export default function ShareImage({
               />
               <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
-                  {achievements["talent"][1].value}
+                  {achievements[1].value}
                 </span>
-                <span>{achievements["talent"][1].title}</span>
+                <span>{achievements[1].title}</span>
               </div>
             </div>
           </div>
@@ -235,9 +243,9 @@ export default function ShareImage({
             <div style={{ flex: 1, display: "flex", gap: "1.5rem" }}>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
-                  {achievements["base"][0].value}
+                  {achievements[2].value}
                 </span>
-                <span>{achievements["base"][0].title}</span>
+                <span>{achievements[2].title}</span>
               </div>
               <div
                 style={{
@@ -248,9 +256,9 @@ export default function ShareImage({
               />
               <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
-                  {achievements["base"][1].value}
+                  {achievements[3].value}
                 </span>
-                <span>{achievements["base"][1].title}</span>
+                <span>{achievements[3].title}</span>
               </div>
             </div>
           </div>
@@ -302,9 +310,9 @@ export default function ShareImage({
             <div style={{ flex: 1, display: "flex", gap: "1.5rem" }}>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
-                  {achievements["zerion"][0].value}
+                  {achievements[4].value}
                 </span>
-                <span>{achievements["zerion"][0].title}</span>
+                <span>{achievements[4].title}</span>
               </div>
               <div
                 style={{
@@ -315,9 +323,9 @@ export default function ShareImage({
               />
               <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
-                  {achievements["zerion"][1].value}
+                  {achievements[5].value}
                 </span>
-                <span>{achievements["zerion"][1].title}</span>
+                <span>{achievements[5].title}</span>
               </div>
             </div>
           </div>
@@ -367,9 +375,9 @@ export default function ShareImage({
             <div style={{ flex: 1, display: "flex", gap: "1.5rem" }}>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2rem" }}>
                 <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
-                  {achievements["zora"][0].value}
+                  {achievements[6].value}
                 </span>
-                <span>{achievements["zora"][0].title}</span>
+                <span>{achievements[6].title}</span>
               </div>
               <div
                 style={{
@@ -380,9 +388,9 @@ export default function ShareImage({
               />
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "2rem" }}>
                 <span style={{ fontSize: "3rem", fontWeight: "400", letterSpacing: "-2.6px" }}>
-                  {achievements["zora"][1].value}
+                  {achievements[7].value}
                 </span>
-                <span>{achievements["zora"][1].title}</span>
+                <span>{achievements[7].title}</span>
               </div>
             </div>
           </div>

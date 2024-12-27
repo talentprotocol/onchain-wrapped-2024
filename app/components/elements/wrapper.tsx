@@ -6,13 +6,17 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo } from "react";
 
 import TalentLogo from "@/app/assets/images/logo.svg";
-import { organizations } from "@/app/utils/constants";
+import { organizations, screens } from "@/app/utils/constants";
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const pathSegments = pathname.split("/");
-  const lastPathSegment = (pathSegments.pop() || "") as keyof typeof organizations;
-  const isGradientPage = useMemo(() => Object.keys(organizations).includes(lastPathSegment), [lastPathSegment]);
+
+  const gradient = useMemo(() => {
+    const pathSegments = pathname.split("/");
+    const lastPathSegment = pathSegments.pop() || "";
+    const organization = screens.find(({ name }) => name === lastPathSegment)?.organization;
+    return organization ? organizations[organization].gradient : "";
+  }, [pathname]);
 
   useEffect(() => {
     AOS.init({
@@ -23,16 +27,16 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <main
-      className={`flex flex-col items-center h-svh pt-2 ${
-        isGradientPage ? `bg-gradient-to-br ${organizations[lastPathSegment].gradient}` : "bg-background"
+      className={`flex flex-col items-center min-h-svh py-4 sm:py-14 ${
+        !!gradient ? `bg-gradient-to-br ${gradient}` : "bg-background"
       }`}
     >
       <header className="z-10">
-        <nav className="grid grid-cols-1 items-center px-4 py-2">
-          <Image src={TalentLogo} alt="Talent Protocol logo" className={isGradientPage ? "invert" : "invert-0"} />
+        <nav className="pt-4">
+          <Image src={TalentLogo} alt="Talent Protocol logo" className={!!gradient ? "invert" : "invert-0"} />
         </nav>
       </header>
-      <section className="w-full sm:w-96 h-full flex flex-col items-center p-4 sm:py-14 z-10">{children}</section>
+      <section className="w-full sm:w-96 flex flex-1 flex-col items-center gap-8 p-4 z-10">{children}</section>
     </main>
   );
 }

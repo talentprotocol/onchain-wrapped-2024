@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmMono.className} ${inter.className} antialiased overflow-hidden`}>
+      <body className={`${dmMono.className} ${inter.className} antialiased overflow-x-hidden`}>
         <ReactQueryProvider>
           <Suspense>
             <Toaster />

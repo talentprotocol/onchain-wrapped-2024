@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const authToken = localStorage.getItem("auth_token");
 
-    if (authToken) {
+    if (authToken && authToken !== "undefined") {
       router.push(`/login_callback?auth_token=${authToken}`);
     }
   }, [router]);
@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <>
       <h1 className="text-2xl font-semibold">Onchain Wrapped 2024</h1>
-      <div className="h-full flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center">
         <div
           data-aos="zoom-in"
           className="w-min h-64 flex flex-col items-start justify-between p-6 border rounded-[40px] bg-white shadow font-mono uppercase"

@@ -34,7 +34,7 @@ export default function ButtonRefresh({
   }, [authToken, router, talentId, setLoading]);
 
   return (
-    <Button onClick={refreshData} disabled={disabled} className="w-full flex items-center gap-2 mt-4">
+    <Button onClick={refreshData} disabled={disabled} className="w-full flex items-center gap-2">
       <span>Refresh data</span>
     </Button>
   );
