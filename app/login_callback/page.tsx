@@ -24,6 +24,8 @@ export default function Page() {
       });
 
       if (!result.ok) {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user");
         router.push("/");
       }
 

@@ -25,6 +25,8 @@ export function useGetUser() {
     const data = await result.json();
 
     if (result.status == 404) {
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user");
       router.push("/");
     }
 
