@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Zora from "@/app/assets/icons/zora.svg";
 import { Button } from "@/app/components/atoms";
-import ButtonCopy from "@/app/components/elements/button-copy";
 import ButtonFarcaster from "@/app/components/elements/button-farcaster";
 import ButtonRefresh from "@/app/components/elements/button-refresh";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
@@ -97,7 +96,6 @@ export default function Share() {
             <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
           </>
         )}
-        <ButtonCopy imageUrl={imageUrl} />
       </div>
     </>
   );
