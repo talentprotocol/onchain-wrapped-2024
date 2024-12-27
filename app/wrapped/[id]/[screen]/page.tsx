@@ -22,8 +22,8 @@ export default function WrappedScreen() {
     const numberValue = Number(value);
     const conditionMatch = wrapped?.conditions?.find(({ condition }, index) => {
       if (index === 0 && numberValue < condition[0]) return true;
-      if (index === 1 && numberValue > condition[0] && numberValue < condition[1]) return true;
-      if (index === 2 && numberValue > condition[0]) return true;
+      if (index === 1 && numberValue >= condition[0] && numberValue < condition[1]) return true;
+      if (index === 2 && numberValue >= condition[0]) return true;
       return false;
     }) || { title: "-", description: "-" };
 
