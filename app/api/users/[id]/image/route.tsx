@@ -1,19 +1,19 @@
 import { promises as fsPromises } from "fs";
 import { ImageResponse } from "next/og";
+import { NextResponse } from "next/server";
 import path from "path";
 
 import ShareImage from "@/app/components/elements/share-image";
-import { organizations } from "@/app/utils/constants";
+import { organizations, OrgEnum } from "@/app/utils/constants";
 import { rollbarError } from "@/utils/rollbar/log";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { searchParams } = new URL(request.url);
   const { id } = await params;
   const talentId: number = parseInt(id) || 0;
 
-  const color = (searchParams.get("color") ?? "talent") as keyof typeof organizations;
+  const color = searchParams.get("color") as OrgEnum;
 
   const supabase = await createSupabaseServerClient();
   const { data: user, error: getUserError } = await supabase
