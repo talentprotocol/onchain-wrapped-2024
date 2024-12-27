@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import Check from "@/app/assets/icons/check.svg";
 import { Button } from "@/app/components/atoms";
+import ButtonRefresh from "@/app/components/elements/button-refresh";
 import { usePageVisibility } from "@/app/hooks/useVisibility";
 import type { UserModel } from "@/models/user.model";
 import Link from "next/link";
@@ -61,6 +62,7 @@ export default function Page() {
   const timerIdRef = useRef<ReturnType<typeof setTimeout>>(null);
   const [isPollingEnabled, setIsPollingEnabled] = useState(true);
   const [user, setUser] = useState<UserModel>();
+  const [authToken, setAuthToken] = useState<string | null>(null);
 
   const isPageVisible = usePageVisibility();
   const router = useRouter();
@@ -106,6 +108,7 @@ export default function Page() {
   }, [router, talentId]);
 
   useEffect(() => {
+    setAuthToken(localStorage.getItem("auth_token"));
     fetchUser();
   }, [fetchUser]);
 
@@ -117,8 +120,8 @@ export default function Page() {
 
     const startPolling = () => {
       // pollingCallback(); // To immediately start fetching data
-      // Polling every 30 seconds
-      timerIdRef.current = setInterval(pollingCallback, 10000);
+      // Polling every 5 seconds
+      timerIdRef.current = setInterval(pollingCallback, 5000);
     };
 
     const stopPolling = () => {
@@ -191,8 +194,16 @@ export default function Page() {
         >
           <span>Add more wallets</span>
         </Button>
-        <Link href={`/wrapped/${user?.talent_id}/talent`} className="w-full">
-          <Button variant="default" className="w-full">
+        {talentId && authToken && !user?.zora_post_url && (
+          <ButtonRefresh
+            authToken={authToken}
+            talentId={Number(talentId)}
+            setLoading={setIsPollingEnabled}
+            disabled={isPollingEnabled}
+          />
+        )}
+        <Link href={`/wrapped/${talentId}/talent`} className="w-full">
+          <Button variant="default" className="w-full" disabled={isPollingEnabled}>
             Check my 2024 Wrapped
           </Button>
         </Link>

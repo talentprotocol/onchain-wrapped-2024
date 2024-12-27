@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Zora from "@/app/assets/icons/zora.svg";
 import { Button } from "@/app/components/atoms";
 import ButtonFarcaster from "@/app/components/elements/button-farcaster";
-import ButtonRefresh from "@/app/components/elements/button-refresh";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
 import ButtonZoraPost from "@/app/components/elements/button-zora-post";
 import { useGetUser } from "@/app/hooks/useUser";
@@ -85,16 +84,13 @@ export default function Share() {
           </Link>
         )}
         {!!authToken && user && !mintedOnZora && (
-          <>
-            <ButtonZoraPost
-              authToken={authToken}
-              talentId={user.talent_id}
-              setLoading={setLoading}
-              refetchUser={refetchUser}
-              disabled={!user.main_wallet}
-            />
-            <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
-          </>
+          <ButtonZoraPost
+            authToken={authToken}
+            talentId={user.talent_id}
+            setLoading={setLoading}
+            refetchUser={refetchUser}
+            disabled={!user.main_wallet}
+          />
         )}
       </div>
     </>
