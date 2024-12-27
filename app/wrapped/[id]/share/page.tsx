@@ -17,7 +17,7 @@ type OrganizationKey = keyof typeof organizations;
 export default function Share() {
   const { user, fetchUser: refetchUser, mintedOnZora } = useGetUser();
   const [color, setColor] = useState<OrganizationKey>("talent");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [mintingOnZora, setMintingOnZora] = useState<boolean>(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
 
   const getButtonBorder = useCallback(
@@ -34,8 +34,20 @@ export default function Share() {
     refetchUser();
   }, [refetchUser]);
 
-  if (!user || loading) {
+  if (!user) {
     return <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />;
+  }
+
+  if (!mintingOnZora) {
+    return (
+      <div className="w-full sm:w-screen h-1/2 flex flex-col items-center justify-around">
+        <h1 className="text-2xl font-semibold">Posting your 2004 Onchain Wrapped on Zora...</h1>
+        <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />
+        <p className="font-semibold">
+          You will earn 50% of the minting fees. They will be sent to your Talent Protocol main wallet.
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -87,7 +99,7 @@ export default function Share() {
           <ButtonZoraPost
             authToken={authToken}
             talentId={user.talent_id}
-            setLoading={setLoading}
+            setLoading={setMintingOnZora}
             refetchUser={refetchUser}
             disabled={!user.main_wallet}
           />
