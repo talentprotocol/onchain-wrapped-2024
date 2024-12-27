@@ -159,7 +159,6 @@ async function splitsContractAddress(
   const predicted = await splitsClient.predictImmutableSplitAddress(splitsConfig);
 
   if (!predicted.splitExists) {
-    console.log("Does not exist");
     // if the split has not been created, create it by getting the transaction to execute
     // and executing it with the wallet client
     const { data, address } = await splitsClient.callData.createSplit(splitsConfig);
@@ -177,6 +176,5 @@ async function splitsContractAddress(
     });
   }
 
-  console.log("predicted.splitAddress", predicted.splitAddress);
   return predicted.splitAddress;
 }

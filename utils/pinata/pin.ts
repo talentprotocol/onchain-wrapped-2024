@@ -36,7 +36,6 @@ export async function pinJsonWithPinata(json: object, talentId: number) {
 
   if (!res.ok) {
     console.error(res);
-    console.log("PINATA_JWT", PINATA_JWT);
   }
 
   const result = (await res.json()) as { IpfsHash: string };
