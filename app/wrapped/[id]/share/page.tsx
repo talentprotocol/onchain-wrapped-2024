@@ -53,8 +53,8 @@ export default function Share() {
   return (
     <>
       <div data-aos="fade-down" className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-semibold">Onchain Wrapped 2024</h1>
-        <p className="font-normal">Share your 2024 Onchain Wrapped, and get the recognition you deserve.</p>
+        <h1 className="text-2xl font-semibold">Share to Earn $TALENT</h1>
+        <p className="font-normal">Post on Farcaster and tag @Talentmate.eth for a little surprise.</p>
       </div>
       <div className="w-full sm:w-screen h-full flex flex-col items-center justify-around">
         <Image
