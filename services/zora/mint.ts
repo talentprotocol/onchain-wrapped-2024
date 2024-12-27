@@ -1,15 +1,26 @@
 import { pinJsonWithPinata } from "@/utils/pinata/pin";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
+import { SplitRecipient, SplitV1Client } from "@0xsplits/splits-sdk";
 import { createCreatorClient, makeMediaTokenMetadata } from "@zoralabs/protocol-sdk";
-import { createPublicClient, createWalletClient, http, PublicClient } from "viem";
+import {
+  Account,
+  Chain,
+  createPublicClient,
+  createWalletClient,
+  http,
+  HttpTransport,
+  PublicClient,
+  WalletClient
+} from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { base } from "viem/chains";
 
 const supabase = await createSupabaseServerClient();
 
-const ZORA_COLLECTION_ADDRESS = process.env.ZORA_COLLECTION_ADDRESS!;
-const BASE_RPC_URL = process.env.BASE_RPC_URL!;
-const ZORA_WALLET_PK = process.env.ZORA_WALLET_PK!;
+const ZORA_COLLECTION_ADDRESS = process.env.NEXT_ZORA_COLLECTION_ADDRESS!;
+const BASE_RPC_URL = process.env.NEXT_BASE_RPC_URL!;
+const ZORA_WALLET_PK = process.env.NEXT_ZORA_WALLET_PK!;
+const SPLITS_API_KEY = process.env.NEXT_ZORA_SPLITS_API_KEY!;
 
 export async function mintOnZora(talentId: number) {
   const { data: user, error: getUserError } = await supabase
@@ -30,10 +41,11 @@ export async function mintOnZora(talentId: number) {
     return user.zora_post_url;
   }
 
-  const fileName = `Onchain Wrapped - ${talentId}`;
-  // const image = await fetch(`https://www.builderscore.xyz/api/users/${talentId}/image`);
-  // const imageBlob = await image.blob();
-  // const file = new File([imageBlob], fileName, { type: imageBlob.type });
+  if (!user.main_wallet) {
+    throw "User main wallet must exist";
+  }
+
+  const fileName = `Onchain Wrapped - ${user.ens ? user.ens : talentId}`;
 
   const mediaFileIpfsUrl = `https://www.builderscore.xyz/api/users/${talentId}/image`;
   const metadataJson = await makeMediaTokenMetadata({
@@ -65,13 +77,16 @@ export async function mintOnZora(talentId: number) {
 
   const creatorClient = createCreatorClient({ chainId: base.id, publicClient });
 
+  const splitRecipient = await splitsContractAddress(base, publicClient, walletClient, account, user.main_wallet);
+
   const { parameters: createParameters, newTokenId } = await creatorClient.create1155OnExistingContract({
     // by providing a contract address, the token will be created on an existing contract
     // at that address
     contractAddress: ZORA_COLLECTION_ADDRESS as `0x${string}`,
     token: {
       // token metadata uri
-      tokenMetadataURI: jsonMetadataUri
+      tokenMetadataURI: jsonMetadataUri,
+      payoutRecipient: splitRecipient
     },
     // account to execute the transaction (the creator)
     account
@@ -105,4 +120,63 @@ export async function mintOnZora(talentId: number) {
   }
 
   return zoraPostUrl;
+}
+
+async function splitsContractAddress(
+  chain: Chain,
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+  creatorAccount: Account,
+  userWallet: string
+) {
+  const splitsClient = new SplitV1Client({
+    chainId: chain.id,
+    publicClient: publicClient as PublicClient<HttpTransport, Chain>,
+    apiConfig: {
+      apiKey: SPLITS_API_KEY
+    }
+  });
+
+  const recipients = [
+    {
+      address: creatorAccount.address,
+      percentAllocation: 50
+    },
+    {
+      address: userWallet,
+      percentAllocation: 50
+    }
+  ];
+
+  const splitsConfig: {
+    recipients: SplitRecipient[];
+    distributorFeePercent: number;
+  } = {
+    recipients: recipients,
+    distributorFeePercent: 0
+  };
+
+  const predicted = await splitsClient.predictImmutableSplitAddress(splitsConfig);
+
+  if (!predicted.splitExists) {
+    console.log("Does not exist");
+    // if the split has not been created, create it by getting the transaction to execute
+    // and executing it with the wallet client
+    const { data, address } = await splitsClient.callData.createSplit(splitsConfig);
+
+    const hash = await walletClient.sendTransaction({
+      to: address as `0x${string}`,
+      account: creatorAccount,
+      chain,
+      data
+    });
+
+    await publicClient.waitForTransactionReceipt({
+      confirmations: 3,
+      hash
+    });
+  }
+
+  console.log("predicted.splitAddress", predicted.splitAddress);
+  return predicted.splitAddress;
 }

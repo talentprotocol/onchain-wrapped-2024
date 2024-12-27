@@ -22,6 +22,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
     image_url: onchainWrapped.image_url,
     loading_builder_score: onchainWrapped.calculating_score,
     ens: onchainWrapped.ens,
+    main_wallet: onchainWrapped.main_wallet,
     onchain_since: onchainWrapped.onchain_since,
     credentials_count: onchainWrapped.credentials_count,
     github_contributions: onchainWrapped.github_contributions,

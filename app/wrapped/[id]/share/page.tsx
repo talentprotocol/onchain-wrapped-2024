@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Zora from "@/app/assets/icons/zora.svg";
 import { Button } from "@/app/components/atoms";
-import ButtonCopy from "@/app/components/elements/button-copy";
 import ButtonFarcaster from "@/app/components/elements/button-farcaster";
 import ButtonRefresh from "@/app/components/elements/button-refresh";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
@@ -77,8 +76,8 @@ export default function Share() {
       <div data-aos="fade-right" className="w-full flex flex-col gap-2">
         <ButtonFarcaster />
         <ButtonTwitter />
-        {user && user.zora_post_url && (
-          <Link href={user.zora_post_url} className="w-full">
+        {user && mintedOnZora && (
+          <Link href={user?.zora_post_url || "#"} target="_blank" className="w-full">
             <Button variant="secondary" className="w-full">
               <Image src={Zora} alt="" width={16} height={16} />
               Mint on Zora
@@ -86,17 +85,17 @@ export default function Share() {
           </Link>
         )}
         {!!authToken && user && !mintedOnZora && (
-          <ButtonZoraPost
-            authToken={authToken}
-            talentId={user.talent_id}
-            setLoading={setLoading}
-            refetchUser={refetchUser}
-          />
+          <>
+            <ButtonZoraPost
+              authToken={authToken}
+              talentId={user.talent_id}
+              setLoading={setLoading}
+              refetchUser={refetchUser}
+              disabled={!user.main_wallet}
+            />
+            <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
+          </>
         )}
-        {!!authToken && user && !mintedOnZora && (
-          <ButtonRefresh authToken={authToken} talentId={user.talent_id} setLoading={setLoading} />
-        )}
-        <ButtonCopy imageUrl={imageUrl} />
       </div>
     </>
   );

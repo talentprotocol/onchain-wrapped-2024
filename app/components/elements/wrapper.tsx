@@ -2,19 +2,14 @@
 
 import AOS from "aos";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo } from "react";
 
-import Back from "@/app/assets/icons/back.svg";
 import TalentLogo from "@/app/assets/images/logo.svg";
-import { Button } from "@/app/components/atoms";
 import { organizations } from "@/app/utils/constants";
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const router = useRouter();
-
-  const isInitialPage = useMemo(() => pathname === "/", [pathname]);
   const pathSegments = pathname.split("/");
   const lastPathSegment = (pathSegments.pop() || "") as keyof typeof organizations;
   const isGradientPage = useMemo(() => Object.keys(organizations).includes(lastPathSegment), [lastPathSegment]);
@@ -33,18 +28,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
       }`}
     >
       <header className="z-10">
-        <nav className="grid grid-cols-3 items-center px-4">
-          {!isInitialPage ? (
-            <Button className="w-fit hover:bg-transparent" onClick={() => router.back()} variant="ghost">
-              <Image
-                src={Back}
-                alt="Back button"
-                className={`${isGradientPage ? "invert" : "invert-0"} hover:${isGradientPage ? "invert-0" : "invert"}`}
-              />
-            </Button>
-          ) : (
-            <div></div>
-          )}
+        <nav className="grid grid-cols-1 items-center px-4 py-2">
           <Image src={TalentLogo} alt="Talent Protocol logo" className={isGradientPage ? "invert" : "invert-0"} />
         </nav>
       </header>

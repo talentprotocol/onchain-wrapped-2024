@@ -8,6 +8,7 @@ export interface UserModel {
   credentials_count: number;
   github_contributions: number;
   ens: string;
+  main_wallet: string | undefined;
   calculated_at: Date | undefined;
   onchain_since: Date | undefined;
   wallets: WalletModel[];
