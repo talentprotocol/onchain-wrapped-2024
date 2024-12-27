@@ -1,5 +1,6 @@
 import { mintOnZora } from "@/services/zora/mint";
 import { rollbarError } from "@/utils/rollbar/log";
+import { getTalentOnchainWrapped } from "@/utils/talent_protocol/client";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,6 +17,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (!authToken) {
     return NextResponse.json({ error: "Auth Token is required to access the API" }, { status: 400 });
   }
+
+  const talentResponseBody = await getTalentOnchainWrapped(authToken);
+  const onchainWrapped = talentResponseBody.onchain_wrapped;
+
+  if (onchainWrapped.id != talentId) {
+    return NextResponse.json({ error: "You can only mint your own wrapped" }, { status: 401 });
+  }
+
   try {
     const zoraPostUrl = await mintOnZora(talentId);
 
