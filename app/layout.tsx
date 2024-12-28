@@ -30,7 +30,7 @@ export default function RootLayout({
             <Wrapper>{children}</Wrapper>
           </Suspense>
         </ReactQueryProvider>
-        <div className="absolute top-0 left-0 w-screen h-screen bg-hero-pattern bg-center animate-pulse"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-hero-pattern bg-center animate-pulse"></div>
       </body>
     </html>
   );

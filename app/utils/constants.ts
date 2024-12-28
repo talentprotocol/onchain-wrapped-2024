@@ -22,7 +22,6 @@ type ScreenType = {
   value: (user?: UserModel) => string | number | undefined;
   next_page: string;
   conditions: { condition: number[]; title: string; description: string }[];
-  animation: "left" | "right" | "up" | "down";
 };
 
 export const organizations: Record<OrgEnum, OrganizationType> = {
@@ -79,8 +78,7 @@ export const screens: ScreenType[] = [
         title: "Top Builder",
         description: "Your Builder Score reflects a significant impact on the onchain ecosystem."
       }
-    ],
-    animation: "right"
+    ]
   },
   {
     organization: OrgEnum.TALENT,
@@ -104,8 +102,7 @@ export const screens: ScreenType[] = [
         title: "Credential Collector",
         description: "You’re stacking credentials at an impressive rate."
       }
-    ],
-    animation: "left"
+    ]
   },
   {
     organization: OrgEnum.BASE,
@@ -129,8 +126,7 @@ export const screens: ScreenType[] = [
         title: "Open-Source Leader",
         description: "Your GitHub activity is a key part of shaping the ecosystem."
       }
-    ],
-    animation: "up"
+    ]
   },
   {
     organization: OrgEnum.BASE,
@@ -155,8 +151,7 @@ export const screens: ScreenType[] = [
         title: "Lego King",
         description: "Your deployments are setting standards in the space."
       }
-    ],
-    animation: "down"
+    ]
   },
   {
     organization: OrgEnum.ZERION,
@@ -180,8 +175,7 @@ export const screens: ScreenType[] = [
         title: "Block Scanner",
         description: "Your transaction volume is impressive and shows you’re really moving onchain."
       }
-    ],
-    animation: "right"
+    ]
   },
   {
     organization: OrgEnum.ZERION,
@@ -205,8 +199,7 @@ export const screens: ScreenType[] = [
         title: "Wolf of Wall Street",
         description: "You are making a living out of crypto!"
       }
-    ],
-    animation: "left"
+    ]
   },
   {
     organization: OrgEnum.ZORA,
@@ -230,8 +223,7 @@ export const screens: ScreenType[] = [
         title: "Zor-fluencer",
         description: "Your content is something to talk about!"
       }
-    ],
-    animation: "up"
+    ]
   },
   {
     organization: OrgEnum.ZORA,
@@ -255,7 +247,6 @@ export const screens: ScreenType[] = [
         title: "Aesthetic",
         description: "It’s not only a JPEG..."
       }
-    ],
-    animation: "down"
+    ]
   }
 ];

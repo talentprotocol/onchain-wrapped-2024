@@ -34,10 +34,9 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0 }}
           transition={{
-            duration: 0.4,
-            scale: { type: "inertia", visualDuration: 0.4, bounce: 0.5 }
+            duration: 0.8,
+            scale: { type: "spring", visualDuration: 0.8, bounce: 0.5 }
           }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1 }}
