@@ -180,6 +180,21 @@ export default function Page() {
         ))}
       </div>
       <div className="w-full flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
+          <Link href={`/wrapped/${talentId}/builder_score`} className="w-full">
+            <Button variant="default" className="w-full" disabled={isPollingEnabled}>
+              Check my 2024 Wrapped
+            </Button>
+          </Link>
+          {talentId && authToken && !user?.zora_post_url && (
+            <ButtonRefresh
+              authToken={authToken}
+              talentId={Number(talentId)}
+              setLoading={setIsPollingEnabled}
+              disabled={isPollingEnabled}
+            />
+          )}
+        </div>
         <div className="flex flex-col sm:flex-row gap-2">
           <Button
             variant="secondary"
@@ -195,21 +210,6 @@ export default function Page() {
           >
             <span>Add more wallets</span>
           </Button>
-        </div>
-        <div className="flex flex-col gap-2">
-          {talentId && authToken && !user?.zora_post_url && (
-            <ButtonRefresh
-              authToken={authToken}
-              talentId={Number(talentId)}
-              setLoading={setIsPollingEnabled}
-              disabled={isPollingEnabled}
-            />
-          )}
-          <Link href={`/wrapped/${talentId}/builder_score`} className="w-full">
-            <Button variant="default" className="w-full" disabled={isPollingEnabled}>
-              Check my 2024 Wrapped
-            </Button>
-          </Link>
         </div>
       </div>
     </div>

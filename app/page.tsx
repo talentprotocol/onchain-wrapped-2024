@@ -1,11 +1,12 @@
 "use client";
 
+import { motion } from "motion/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import Wallet from "@/app/assets/icons/wallet.svg";
 import { Button } from "@/app/components/atoms";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -30,8 +31,15 @@ export default function Home() {
     <>
       <h1 className="text-2xl font-semibold">Onchain Wrapped 2024</h1>
       <div className="flex-1 flex items-center justify-center">
-        <div
-          data-aos="zoom-in"
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.8,
+            scale: { type: "spring", visualDuration: 0.8, bounce: 0.5 }
+          }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1 }}
           className="w-min h-64 flex flex-col items-start justify-between p-6 border rounded-[40px] bg-white shadow font-mono uppercase"
         >
           <h2 className="flex flex-col -gap-1 text-4xl text-accent-foreground">
@@ -50,7 +58,7 @@ export default function Home() {
             </span>
             <span className="text-start">talent protocol, base, zerion & zora</span>
           </div>
-        </div>
+        </motion.div>
       </div>
       <div className="flex flex-col items-center gap-2 w-full sm:w-96">
         <Button className="w-full flex items-center gap-2" onClick={redirectToTalentProtocolSignIn}>

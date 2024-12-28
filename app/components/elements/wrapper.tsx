@@ -1,9 +1,8 @@
 "use client";
 
-import AOS from "aos";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import TalentLogo from "@/app/assets/images/logo.svg";
 import { organizations, screens } from "@/app/utils/constants";
@@ -17,13 +16,6 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
     const organization = screens.find(({ name }) => name === lastPathSegment)?.organization;
     return organization ? organizations[organization].gradient : "";
   }, [pathname]);
-
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: false
-    });
-  }, []);
 
   return (
     <main
