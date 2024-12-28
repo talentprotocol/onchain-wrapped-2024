@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import { DM_Mono, Inter } from "next/font/google";
-import Image from "next/image";
-
-import Back from "@/app/assets/icons/back.svg";
-import TalentLogo from "@/app/assets/images/logo.svg";
-import { Button } from "@/app/components/atoms";
-
 import { Suspense } from "react";
+
+import { Toaster } from "./components/atoms";
+import Wrapper from "./components/elements/wrapper";
 import ReactQueryProvider from "./components/queryClientProvider";
+
 import "./globals.css";
 
-const dmMono = DM_Mono({ weight: ["500"], preload: false });
+const dmMono = DM_Mono({ weight: ["300", "400", "500"], preload: false });
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,20 +23,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmMono.className} ${inter.className} antialiased flex flex-col items-center h-svh pt-2`}>
+      <body className={`${dmMono.className} ${inter.className} antialiased`}>
         <ReactQueryProvider>
           <Suspense>
-            <header>
-              <nav className="grid grid-cols-3 items-center px-4">
-                <Button variant="ghost" className="w-fit">
-                  <Image src={Back} alt="Back button" />
-                </Button>
-                <Image src={TalentLogo} alt="Talent Protocol logo" />
-              </nav>
-            </header>
-            <main className="w-full h-full flex flex-col items-center p-4 md:p-14 lg:p-28">{children}</main>
+            <Toaster />
+            <Wrapper>{children}</Wrapper>
           </Suspense>
         </ReactQueryProvider>
+        <div className="absolute top-0 left-0 w-full h-full bg-hero-pattern bg-center animate-pulse"></div>
       </body>
     </html>
   );

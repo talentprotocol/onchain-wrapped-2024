@@ -1,6 +1,5 @@
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { getTalentOnchainWrapped } from "@/utils/talent_protocol/client";
-import { serializeUser } from "./serializeUser";
 
 const supabase = await createSupabaseServerClient();
 
@@ -8,7 +7,7 @@ export async function upsertUserFromAuthToken(authToken: string) {
   const talentResponseBody = await getTalentOnchainWrapped(authToken);
   const onchainWrapped = talentResponseBody.onchain_wrapped;
 
-  const { data, error: getUserError } = await supabase
+  const { data: user, error: getUserError } = await supabase
     .from("users")
     .select()
     .eq("talent_id", onchainWrapped.id)
@@ -18,36 +17,60 @@ export async function upsertUserFromAuthToken(authToken: string) {
     throw getUserError;
   }
 
-  if (data) {
-    upsertUserWallets(data.id, onchainWrapped.wallets);
-    return serializeUser(data);
+  const wrappedData = {
+    builder_score: onchainWrapped.score,
+    image_url: onchainWrapped.image_url,
+    loading_builder_score: onchainWrapped.calculating_score,
+    ens: onchainWrapped.ens,
+    main_wallet: onchainWrapped.main_wallet,
+    onchain_since: onchainWrapped.onchain_since,
+    credentials_count: onchainWrapped.credentials_count,
+    github_contributions: onchainWrapped.github_contributions,
+    base_testnet_contracts_deployed: onchainWrapped.base_testnet_contracts_deployed,
+    base_mainnet_contracts_deployed: onchainWrapped.base_mainnet_contracts_deployed
+  };
+
+  if (user) {
+    // Don't update already minted users
+    if (!!user.zora_post_url) {
+      return user;
+    }
+
+    const { data: updatedUser, error } = await supabase
+      .from("users")
+      .update(wrappedData)
+      .eq("id", user.id)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      throw error;
+    }
+
+    await upsertUserWallets(updatedUser.id, onchainWrapped.wallets);
+    return user;
   }
-  const { data: createUserData, error: createUserError } = await supabase
+
+  const { data: createdUser, error: createUserError } = await supabase
     .from("users")
     .insert({
       talent_id: onchainWrapped.id,
-      builder_score: onchainWrapped.score,
-      onchain_since: onchainWrapped.onchain_since,
-      credentials_count: onchainWrapped.credentials_count,
-      github_contributions: onchainWrapped.github_contributions,
-      ens: onchainWrapped.ens,
-      base_testnet_contracts_deployed: onchainWrapped.base_testnet_contracts_deployed,
-      base_mainnet_contracts_deployed: onchainWrapped.base_mainnet_contracts_deployed
+      ...wrappedData
     })
     .select()
     .maybeSingle();
 
-  upsertUserWallets(createUserData.id, onchainWrapped.wallets);
+  await upsertUserWallets(createdUser.id, onchainWrapped.wallets);
 
   if (createUserError) {
     throw createUserError;
   }
 
-  return serializeUser(createUserData);
+  return createdUser;
 }
 
-function upsertUserWallets(userId: number, wallets: string[]) {
-  wallets.forEach(async wallet => {
+async function upsertUserWallets(userId: number, wallets: string[]) {
+  for (const wallet of wallets) {
     const { error } = await supabase
       .from("wallets")
       .upsert({ user_id: userId, address: wallet }, { onConflict: "address" });
@@ -55,5 +78,5 @@ function upsertUserWallets(userId: number, wallets: string[]) {
     if (error) {
       throw error;
     }
-  });
+  }
 }

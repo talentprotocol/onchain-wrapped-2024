@@ -50,7 +50,10 @@ export default {
           "2": "hsl(var(--chart-2))",
           "3": "hsl(var(--chart-3))",
           "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))"
+          "5": "hsl(var(--chart-5))",
+          "6": "hsl(var(--chart-6))",
+          "7": "hsl(var(--chart-7))",
+          "8": "hsl(var(--chart-8))"
         }
       },
       borderRadius: {
@@ -63,7 +66,14 @@ export default {
         mono: ["DM Mono", ...defaultTheme.fontFamily.sans]
       },
       backgroundImage: {
-        "hero-pattern": "url('assets/images/hero-pattern.png')"
+        "hero-pattern": "url('assets/images/hero-pattern.svg')",
+        "share-pattern-purple": "url('assets/images/share-pattern-purple.svg')",
+        "share-pattern-red": "url('assets/images/share-pattern-red.svg')",
+        "share-pattern-green": "url('assets/images/share-pattern-green.svg')",
+        "share-pattern-blue": "url('assets/images/share-pattern-blue.svg')"
+      },
+      animation: {
+        "spin-slow": "spin 3s linear infinite"
       }
     },
     plugins: []

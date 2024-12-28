@@ -21,7 +21,10 @@ export async function POST() {
     const refreshTokenResponse = await refreshToken(authToken);
     const user = await upsertUserFromAuthToken(refreshTokenResponse.token);
 
-    waitUntil(refreshUserWalletsData(user.id));
+    // Don't update already minted users
+    if (!user.zora_post_url) {
+      waitUntil(refreshUserWalletsData(user.id));
+    }
 
     return NextResponse.json({
       user,
