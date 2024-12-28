@@ -47,7 +47,7 @@ export async function mintOnZora(talentId: number) {
 
   const fileName = `Onchain Wrapped - ${user.ens ? user.ens : talentId}`;
 
-  const mediaFileIpfsUrl = `https://www.builderscore.xyz/api/users/${talentId}/image`;
+  const mediaFileIpfsUrl = `${process.env.NEXT_PUBLIC_APP_URL!}/api/users/${talentId}/image`;
   const metadataJson = await makeMediaTokenMetadata({
     mediaUrl: mediaFileIpfsUrl,
     name: fileName

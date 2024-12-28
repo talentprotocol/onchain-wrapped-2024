@@ -12,7 +12,7 @@ export default function ButtonTwitter() {
 
   const shareOnTwitter = useCallback(() => {
     const text = encodeURIComponent("Check out my Onchain Wrapped 2024 by Talent Protocol!");
-    const url = encodeURIComponent(`https://www.builderscore.xyz/wrapped/${user?.talent_id}/share`);
+    const url = encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL!}/wrapped/${user?.talent_id}/share`);
     const hashtags = "OnchainWrapped2024,TalentProtocol";
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`;
 

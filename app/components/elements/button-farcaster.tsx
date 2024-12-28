@@ -12,9 +12,10 @@ export default function ButtonFarcaster() {
 
   const shareOnFarcaster = useCallback(() => {
     const text = encodeURIComponent(
-      `@talentmate.eth Check out my Onchain Wrapped 2024 by Talent Protocol!\nhttps://www.builderscore.xyz/wrapped/${user?.talent_id}/talent`
+      `@talentmate.eth Check out my Onchain Wrapped 2024 by Talent Protocol!\n${process.env
+        .NEXT_PUBLIC_APP_URL!}/wrapped/${user?.talent_id}/talent`
     );
-    const url = encodeURIComponent(`https://www.builderscore.xyz/wrapped/${user?.talent_id}/talent`);
+    const url = encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL!}/wrapped/${user?.talent_id}/talent`);
     const farcasterShareUrl = `https://warpcast.com/~/compose?text=${text}&embeds[]=${url}`;
 
     window.open(farcasterShareUrl, "_blank");
