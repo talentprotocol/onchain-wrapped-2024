@@ -2,19 +2,26 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useMemo } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
-import { Button } from "@/app/components/atoms";
+import { Button, Progress } from "@/app/components/atoms";
 import { useGetUser } from "@/app/hooks/useUser";
 import { organizations, screens } from "@/app/utils/constants";
+
+const duration = 5000;
+const interval = 100;
 
 export default function WrappedScreen() {
   const { user } = useGetUser();
   const { screen } = useParams();
+  const router = useRouter();
+
+  const [progress, setProgress] = useState(0);
 
   const screenData = useMemo(() => {
     const wrapped = screens.find(({ name }) => name === screen);
+    const index = screens.findIndex(({ name }) => name === screen);
     const value = wrapped?.value(user);
     const formattedValue =
       screen === "estimated_profit" ? `$${value?.toLocaleString("en-us", { maximumFractionDigits: 0 })}` : value;
@@ -30,6 +37,7 @@ export default function WrappedScreen() {
     const organization = wrapped?.organization ? organizations[wrapped.organization] : organizations.talent;
 
     return {
+      index,
       organization,
       wrapped,
       value: formattedValue,
@@ -38,8 +46,38 @@ export default function WrappedScreen() {
     };
   }, [screen, user]);
 
+  useEffect(() => {
+    if (!user?.talent_id) return;
+
+    setProgress(0); // Reset progress
+
+    const startTime = Date.now();
+
+    const intervalId = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const percentage = Math.min((elapsed / duration) * 100, 100);
+
+      setProgress(percentage);
+
+      if (elapsed >= duration) {
+        clearInterval(intervalId);
+
+        // Navigate to the next route when the time elapses
+        router.push(`/wrapped/${user?.talent_id}/${screenData?.wrapped?.next_page}`);
+      }
+    }, interval);
+
+    return () => clearInterval(intervalId);
+  }, [router, screenData?.wrapped?.next_page, user?.talent_id]);
+
   return (
     <>
+      <div className="w-full grid grid-cols-8 gap-2">
+        {Array.from({ length: 8 }).map((_, index) => {
+          const value = index === screenData.index ? progress : screenData.index < index ? 0 : 100;
+          return <Progress key={index} value={value} />;
+        })}
+      </div>
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -64,7 +102,7 @@ export default function WrappedScreen() {
         </span>
         <span className="font-semibold text-2xl uppercase">{screenData.organization.role}</span>
       </motion.div>
-      <Link href={`/wrapped/${user?.talent_id}/${screenData.wrapped?.next_page}`} prefetch={true} className="w-full">
+      <Link href={`/wrapped/${user?.talent_id}/${screenData.wrapped?.next_page}`} className="w-full">
         <Button variant="secondary" className="w-full">
           Next
         </Button>
