@@ -170,7 +170,7 @@ export default function Page() {
       <div className="w-full flex flex-col gap-6">
         {loadingWallets.map(({ loading, name }) => (
           <div key={name} className="w-full flex justify-between">
-            <span className="text-sm">{name}</span>
+            <span className="text-sm font-semibold">{name}</span>
             {user?.[loading] ? (
               <div className="h-5 w-5 rounded-full border border-primary border-2 border-t-transparent border-l-transparent animate-spin-slow" />
             ) : (
