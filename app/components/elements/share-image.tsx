@@ -135,7 +135,7 @@ export default function ShareImage({
           <div
             style={{
               width: "564px",
-              height: "228px",
+              height: "206px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
@@ -200,7 +200,7 @@ export default function ShareImage({
           <div
             style={{
               width: "564px",
-              height: "228px",
+              height: "206px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
@@ -267,7 +267,7 @@ export default function ShareImage({
           <div
             style={{
               flex: 1,
-              height: "228px",
+              height: "206px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
@@ -332,7 +332,7 @@ export default function ShareImage({
           <div
             style={{
               flex: 1,
-              height: "228px",
+              height: "206px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
@@ -395,6 +395,9 @@ export default function ShareImage({
             </div>
           </div>
         </div>
+      </div>
+      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <span>2024.talentprotocol.com</span>
       </div>
     </div>
   );
