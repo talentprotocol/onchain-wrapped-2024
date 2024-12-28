@@ -24,7 +24,7 @@ export default function ShareImage({
     const value = screen.value(user);
     return {
       title: screen.label,
-      value: value ? value : "-"
+      value: value ? value.toLocaleString("en-us", { maximumFractionDigits: 0 }) : "-"
     };
   });
 
