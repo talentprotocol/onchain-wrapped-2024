@@ -22,16 +22,19 @@ export default function ButtonZoraPost({
   talentId,
   disabled,
   setLoading,
-  refetchUser
+  refetchUser,
+  setOpenZoraMinted,
+  setZoraPostUrl
 }: {
   authToken: string;
   talentId: number;
   disabled: boolean;
   setLoading: (loading: boolean) => void;
   refetchUser: () => void;
+  setOpenZoraMinted: (open: boolean) => void;
+  setZoraPostUrl: (url: string) => void;
 }) {
-  const [open, setOpen] = useState(false);
-  const [url, setUrl] = useState("");
+  const [confirmZoraMintOpen, setConfirmZoraMintOpen] = useState(false);
 
   const refreshData = useCallback(async () => {
     setLoading(true);
@@ -46,8 +49,8 @@ export default function ButtonZoraPost({
     if (result.ok) {
       const data = await result.json();
 
-      setOpen(true);
-      setUrl(data.zoraPostUrl);
+      setOpenZoraMinted(true);
+      setZoraPostUrl(data.zoraPostUrl);
       refetchUser();
       setLoading(false);
     } else {
@@ -58,21 +61,33 @@ export default function ButtonZoraPost({
 
   return (
     <>
-      <Button variant="secondary" onClick={refreshData} disabled={disabled} className="w-full flex items-center gap-2">
+      <Button
+        variant="secondary"
+        onClick={() => setConfirmZoraMintOpen(true)}
+        disabled={disabled}
+        className="w-full flex items-center gap-2"
+      >
         <Image src={Zora} alt="" width={16} height={16} />
         <span>Post on Zora</span>
       </Button>
-      <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialog open={confirmZoraMintOpen} onOpenChange={setConfirmZoraMintOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Posted on Zora!</AlertDialogTitle>
-            <AlertDialogDescription>Onchain Wrapped minted with success. Check it out!</AlertDialogDescription>
+            <AlertDialogTitle>You`re about to post your 2024 on Zora!</AlertDialogTitle>
+            <AlertDialogDescription>
+              After posting you won`t be able to change your wrapped! Make sure you add all your socials and wallets to
+              your Talent Protocol profile
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              <AlertDialogAction>Open on Zora</AlertDialogAction>
+            <a href={`/loading_wrapped/${talentId}`}>
+              <AlertDialogAction>Connect more data</AlertDialogAction>
             </a>
+            <Button onClick={refreshData} variant="default">
+              <Image src={Zora} alt="" width={16} height={16} />
+              Mint
+            </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

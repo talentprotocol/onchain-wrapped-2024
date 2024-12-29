@@ -6,18 +6,31 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Zora from "@/app/assets/icons/zora.svg";
-import { Button } from "@/app/components/atoms";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  Button
+} from "@/app/components/atoms";
 import ButtonFarcaster from "@/app/components/elements/button-farcaster";
 import ButtonTwitter from "@/app/components/elements/button-twitter";
 import ButtonZoraPost from "@/app/components/elements/button-zora-post";
 import { useGetUser } from "@/app/hooks/useUser";
 import { organizations, OrgEnum } from "@/app/utils/constants";
+import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 
 export default function Share() {
   const { user, fetchUser: refetchUser, mintedOnZora } = useGetUser();
   const [color, setColor] = useState(OrgEnum.TALENT);
   const [mintingOnZora, setMintingOnZora] = useState(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
+  const [openZoraMinted, setOpenZoraMinted] = useState(false);
+
+  const [zoraPostUrl, setZoraPostUrl] = useState("");
 
   const getButtonBorder = useCallback(
     (index: OrgEnum, type: "inside" | "outside") => {
@@ -108,9 +121,25 @@ export default function Share() {
             setLoading={setMintingOnZora}
             refetchUser={refetchUser}
             disabled={!user.main_wallet}
+            setOpenZoraMinted={setOpenZoraMinted}
+            setZoraPostUrl={setZoraPostUrl}
           />
         )}
       </div>
+      <AlertDialog open={openZoraMinted} onOpenChange={setOpenZoraMinted}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Posted on Zora!</AlertDialogTitle>
+            <AlertDialogDescription>Onchain Wrapped minted with success. Check it out!</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+            <a href={zoraPostUrl} target="_blank" rel="noopener noreferrer">
+              <AlertDialogAction>Open on Zora</AlertDialogAction>
+            </a>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
