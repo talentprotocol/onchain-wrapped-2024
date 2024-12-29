@@ -171,7 +171,7 @@ async function splitsContractAddress(
     });
 
     await publicClient.waitForTransactionReceipt({
-      confirmations: 3,
+      confirmations: 2,
       hash
     });
   }

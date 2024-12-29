@@ -191,6 +191,7 @@ export default function Page() {
               authToken={authToken}
               talentId={Number(talentId)}
               setLoading={setIsPollingEnabled}
+              setUser={setUser}
               disabled={isPollingEnabled}
             />
           )}

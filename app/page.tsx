@@ -68,8 +68,22 @@ export default function Home() {
         <span className="mt-2 text-xs font-semibold text-muted-foreground">
           <p>By continuing you agree and you&apos;ve read the</p>
           <p>
-            <span className="text-primary">Terms & Conditions</span> and{" "}
-            <span className="text-primary">Privacy and Policy</span>.
+            <a
+              href="https://talentprotocol.notion.site/Terms-Conditions-ec060cb6c06e49a98f17d235d0835773?pvs=4"
+              target="_blank"
+              className="text-primary"
+            >
+              Terms & Conditions
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://talentprotocol.notion.site/Privacy-Policy-cc2b297006b54b3db1a008592302ccf5?pvs=4"
+              target="_blank"
+              className="text-primary"
+            >
+              Privacy and Policy
+            </a>
+            .
           </p>
         </span>
       </div>

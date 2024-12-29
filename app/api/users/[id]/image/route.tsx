@@ -13,7 +13,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const talentId: number = parseInt(id) || 0;
 
-  const color = searchParams.get("color") as OrgEnum;
+  const color = (searchParams.get("color") || "talent") as OrgEnum;
 
   const supabase = await createSupabaseServerClient();
   const { data: user, error: getUserError } = await supabase
