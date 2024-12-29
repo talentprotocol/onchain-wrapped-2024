@@ -11,10 +11,9 @@ export default function ButtonTwitter() {
   const { user } = useGetUser();
 
   const shareOnTwitter = useCallback(() => {
-    const text = encodeURIComponent("Check out my Onchain Wrapped 2024 by Talent Protocol!");
+    const text = encodeURIComponent("My 2024 Onchain! Check my #OnchainWrapped2024 by @TalentProtocol 💫");
     const url = encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL!}/wrapped/${user?.talent_id}/share`);
-    const hashtags = "OnchainWrapped2024,TalentProtocol";
-    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`;
+    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
 
     window.open(twitterShareUrl, "_blank");
   }, [user?.talent_id]);

@@ -42,9 +42,9 @@ export default function Share() {
   if (mintingOnZora) {
     return (
       <div className="flex-1 w-full sm:w-screen flex flex-col items-center justify-around">
-        <h1 className="text-2xl font-semibold">Posting your 2024 Onchain Wrapped on Zora...</h1>
+        <h1 className="text-2xl font-semibold text-center">Posting your 2024 Onchain Wrapped on Zora...</h1>
         <div className="h-24 w-24 rounded-full border border-dotted border-4 border-t-primary animate-spin-slow" />
-        <p className="font-semibold">
+        <p className="font-semibold text-center">
           You will earn 50% of the minting fees. They will be sent to your Talent Protocol main wallet.
         </p>
       </div>
