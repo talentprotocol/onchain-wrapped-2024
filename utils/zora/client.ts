@@ -1,3 +1,5 @@
+import { rollbarError } from "../rollbar/log";
+
 const ZORA_GRAPHQL_URL = "https://api.zora.co/universal/graphql";
 
 export const getWalletPostsAndMints = async (
@@ -42,6 +44,13 @@ export const getWalletPostsAndMints = async (
     },
     body: query
   });
+
+  if (!result.ok) {
+    rollbarError(`Unable to get ${walletAddress} posts and mints`, undefined, {
+      status: result.status,
+      body: result.body
+    });
+  }
 
   return await result.json();
 };
