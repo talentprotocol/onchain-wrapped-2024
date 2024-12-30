@@ -23,6 +23,7 @@ import { useGetUser } from "@/app/hooks/useUser";
 import { organizations, OrgEnum } from "@/app/utils/constants";
 import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 import { useSearchParams } from "next/navigation";
+import { currentTimestamp } from "../utils/cache-timestamp";
 
 export default function SharePage() {
   const currentSearchParams = useSearchParams();
@@ -49,7 +50,10 @@ export default function SharePage() {
     window.history.pushState(null, "", "?" + updatedSearchParams.toString());
   };
 
-  const imageUrl = useMemo(() => `/api/users/${user?.talent_id}/image?color=${color}`, [color, user]);
+  const imageUrl = useMemo(
+    () => `/api/users/${user?.talent_id}/image?color=${color}&cache=${currentTimestamp()}`,
+    [color, user]
+  );
 
   useEffect(() => {
     setAuthToken(localStorage.getItem("auth_token"));
