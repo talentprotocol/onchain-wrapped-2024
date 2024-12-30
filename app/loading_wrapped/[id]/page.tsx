@@ -105,6 +105,7 @@ export default function Page() {
     }
 
     setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
   }, [router, talentId]);
 
   useEffect(() => {
