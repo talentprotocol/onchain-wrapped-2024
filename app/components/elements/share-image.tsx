@@ -22,9 +22,15 @@ export default function ShareImage({
 
   const achievements = screens.map(screen => {
     const value = screen.value(user);
+    let formattedValue = value ? `${value.toLocaleString("en-us", { maximumFractionDigits: 0 })}` : "-";
+
+    if (screen.name == "estimated_profit" && value) {
+      formattedValue = `$${formattedValue}`;
+    }
+
     return {
       title: screen.label,
-      value: value ? value.toLocaleString("en-us", { maximumFractionDigits: 0 }) : "-"
+      value: formattedValue
     };
   });
 
