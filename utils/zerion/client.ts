@@ -29,11 +29,17 @@ export const getWalletTransactions = async (
   walletAddress: string,
   chains: string,
   currency: string,
+  since: number,
+  until: number,
   nextPageUrl: string | undefined
 ) => {
   const queryParams = new URLSearchParams({
     currency: currency,
-    "filter[chain_ids]": chains
+    "filter[chain_ids]": chains,
+    "filter[min_mined_at]": since.toString(),
+    "filter[max_mined_at]": until.toString(),
+    "filter[operation_types]": "approve,burn,deploy,execute,mint,send,trade,withdraw",
+    "filter[trash]": "only_non_trash"
   }).toString();
 
   const url = nextPageUrl ? nextPageUrl : `${ZERION_BASE_URL}/v1/wallets/${walletAddress}/transactions?` + queryParams;

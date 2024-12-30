@@ -2,6 +2,8 @@ import { rollbarError } from "@/utils/rollbar/log";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { getWalletTransactions } from "@/utils/zerion/client";
 
+const BEGINNING_OF_YEAR_TIMESTAMP = 1704067200000;
+const END_OF_YEAR_TIMESTAMP = 1735689599000;
 const CHAINS = "ethereum,base,optimism,binance-smart-chain,arbitrum";
 const CURRENCY = "usd";
 
@@ -17,7 +19,14 @@ export async function getWalletTransactionsCount(wallet: string) {
   let nextPageUrl = undefined;
 
   do {
-    const walletTransactionsResponse = await getWalletTransactions(wallet, CHAINS, CURRENCY, nextPageUrl);
+    const walletTransactionsResponse = await getWalletTransactions(
+      wallet,
+      CHAINS,
+      CURRENCY,
+      BEGINNING_OF_YEAR_TIMESTAMP,
+      END_OF_YEAR_TIMESTAMP,
+      nextPageUrl
+    );
 
     nextPageUrl = walletTransactionsResponse?.links?.next;
 
