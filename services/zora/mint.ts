@@ -22,7 +22,7 @@ const BASE_RPC_URL = process.env.NEXT_BASE_RPC_URL!;
 const ZORA_WALLET_PK = process.env.NEXT_ZORA_WALLET_PK!;
 const SPLITS_API_KEY = process.env.NEXT_ZORA_SPLITS_API_KEY!;
 
-export async function mintOnZora(talentId: number) {
+export async function mintOnZora(talentId: number, color: string) {
   const { data: user, error: getUserError } = await supabase
     .from("users")
     .select()
@@ -47,7 +47,7 @@ export async function mintOnZora(talentId: number) {
 
   const fileName = `Onchain Wrapped - ${user.ens ? user.ens : talentId}`;
 
-  const mediaFileIpfsUrl = `${process.env.NEXT_PUBLIC_APP_URL!}/api/users/${talentId}/image`;
+  const mediaFileIpfsUrl = `${process.env.NEXT_PUBLIC_APP_URL!}/api/users/${talentId}/image?color=${color}`;
   const metadataJson = await makeMediaTokenMetadata({
     mediaUrl: mediaFileIpfsUrl,
     name: fileName

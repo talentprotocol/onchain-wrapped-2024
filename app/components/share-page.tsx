@@ -25,14 +25,14 @@ import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 import { useSearchParams } from "next/navigation";
 
 export default function SharePage() {
+  const currentSearchParams = useSearchParams();
   const { user, fetchUser: refetchUser, mintedOnZora } = useGetUser();
-  const [color, setColor] = useState(OrgEnum.TALENT);
+  const [color, setColor] = useState(currentSearchParams.get("color") || OrgEnum.TALENT);
   const [mintingOnZora, setMintingOnZora] = useState(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [openZoraMinted, setOpenZoraMinted] = useState(false);
   const [loadingImage, setLoadingImage] = useState(true);
   const [zoraPostUrl, setZoraPostUrl] = useState("");
-  const currentSearchParams = useSearchParams();
 
   const getButtonBorder = useCallback(
     (index: OrgEnum, type: "inside" | "outside") => {
@@ -41,10 +41,10 @@ export default function SharePage() {
     [color]
   );
 
-  const changeColor = (color: OrgEnum) => {
-    setColor(color);
+  const changeColor = (newColor: OrgEnum) => {
+    setColor(newColor);
     const updatedSearchParams = new URLSearchParams(currentSearchParams.toString());
-    updatedSearchParams.set("color", color);
+    updatedSearchParams.set("color", newColor);
 
     window.history.pushState(null, "", "?" + updatedSearchParams.toString());
   };
@@ -120,8 +120,8 @@ export default function SharePage() {
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">
-        <ButtonFarcaster />
-        <ButtonTwitter />
+        <ButtonFarcaster color={color} />
+        <ButtonTwitter color={color} />
         {user && mintedOnZora && (
           <Link href={user?.zora_post_url || "#"} target="_blank" className="w-full">
             <Button variant="secondary" className="w-full">
@@ -139,6 +139,7 @@ export default function SharePage() {
             disabled={!user.main_wallet}
             setOpenZoraMinted={setOpenZoraMinted}
             setZoraPostUrl={setZoraPostUrl}
+            color={color}
           />
         )}
       </div>
