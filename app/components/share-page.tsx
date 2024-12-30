@@ -81,7 +81,7 @@ export default function SharePage() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{
           duration: 0.8,
-          scale: { type: "spring", visualDuration: 0.8, bounce: 0.5 }
+          scale: { type: "spring", visualDuration: 0.8, bounce: 0.2 }
         }}
         className="flex flex-col items-center gap-2 text-center"
       >
