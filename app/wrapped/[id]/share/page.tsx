@@ -1,6 +1,7 @@
 "use server";
 
 import SharePage from "@/app/components/share-page";
+import { currentTimestamp } from "@/app/utils/cache-timestamp";
 import { Metadata } from "next";
 
 type Props = {
@@ -16,7 +17,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     openGraph: {
       images: [
         {
-          url: `/api/users/${id}/image?color=${color}`,
+          url: `/api/users/${id}/image?color=${color}&v=${currentTimestamp()}`,
           width: 1200,
           height: 630,
           alt: "Onchain Wrapped 2024",
