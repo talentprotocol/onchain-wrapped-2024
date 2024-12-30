@@ -1,7 +1,7 @@
 import { rollbarServerInstance } from "./config";
 
-export function rollbarError(message: string, error: Error) {
-  console.error(message, error);
+export function rollbarError(message: string, error: Error | undefined, extraData: {} | undefined) {
+  console.error(message, error, extraData);
   rollbarServerInstance.error(message, error);
 }
 

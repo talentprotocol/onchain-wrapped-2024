@@ -1,3 +1,5 @@
+import { rollbarError } from "../rollbar/log";
+
 const ZERION_BASE_URL = "https://api.zerion.io";
 
 export const getWalletChart = async (walletAddress: string, chains: string, currency: string) => {
@@ -10,6 +12,13 @@ export const getWalletChart = async (walletAddress: string, chains: string, curr
     method: "GET",
     headers: headers()
   });
+
+  if (!result.ok) {
+    rollbarError(`Unable to get ${walletAddress} zerion wallet chart`, undefined, {
+      status: result.status,
+      body: result.body
+    });
+  }
 
   return await result.json();
 };
@@ -30,6 +39,13 @@ export const getWalletTransactions = async (
     method: "GET",
     headers: headers()
   });
+
+  if (!result.ok) {
+    rollbarError(`Unable to get ${walletAddress} zerion transactions`, undefined, {
+      status: result.status,
+      body: result.body
+    });
+  }
 
   return await result.json();
 };

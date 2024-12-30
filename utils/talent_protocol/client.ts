@@ -1,3 +1,5 @@
+import { rollbarError } from "../rollbar/log";
+
 const TALENT_PROTOCOL_BASE_URL = process.env.NEXT_TALENT_PROTOCOL_BASE_URL!;
 
 export const refreshAuthToken = async (authToken: string) => {
@@ -9,6 +11,13 @@ export const refreshAuthToken = async (authToken: string) => {
       AUTHORIZATION: `Bearer ${authToken}`
     }
   });
+
+  if (!result.ok) {
+    rollbarError("Unable to refresh token from talent protocol", undefined, {
+      status: result.status,
+      body: result.body
+    });
+  }
 
   return await result.json();
 };
@@ -22,6 +31,13 @@ export const getTalentOnchainWrapped = async (authToken: string) => {
       AUTHORIZATION: `Bearer ${authToken}`
     }
   });
+
+  if (!result.ok) {
+    rollbarError("Unable to get wrapped from talent protocol", undefined, {
+      status: result.status,
+      body: result.body
+    });
+  }
 
   return await result.json();
 };
