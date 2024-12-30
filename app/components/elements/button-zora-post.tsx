@@ -21,6 +21,7 @@ export default function ButtonZoraPost({
   authToken,
   talentId,
   disabled,
+  color,
   setLoading,
   refetchUser,
   setOpenZoraMinted,
@@ -29,6 +30,7 @@ export default function ButtonZoraPost({
   authToken: string;
   talentId: number;
   disabled: boolean;
+  color: string;
   setLoading: (loading: boolean) => void;
   refetchUser: () => void;
   setOpenZoraMinted: (open: boolean) => void;
@@ -43,7 +45,10 @@ export default function ButtonZoraPost({
       headers: {
         Accept: "application/json",
         AUTHORIZATION: `Bearer ${authToken}`
-      }
+      },
+      body: JSON.stringify({
+        color
+      })
     });
 
     if (result.ok) {
@@ -57,7 +62,7 @@ export default function ButtonZoraPost({
       toast({ title: "Error!", description: "Unable to mint on Zora" });
       setLoading(false);
     }
-  }, [authToken, refetchUser, setLoading, talentId]);
+  }, [authToken, refetchUser, setLoading, talentId, color]);
 
   return (
     <>
