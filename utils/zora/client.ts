@@ -45,12 +45,14 @@ export const getWalletPostsAndMints = async (
     body: query
   });
 
+  const body = await result.json();
+
   if (!result.ok) {
     rollbarError(`Unable to get ${walletAddress} posts and mints`, undefined, {
       status: result.status,
-      body: result.body
+      body
     });
   }
 
-  return await result.json();
+  return body;
 };

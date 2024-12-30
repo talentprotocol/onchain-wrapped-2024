@@ -13,14 +13,16 @@ export const getWalletChart = async (walletAddress: string, chains: string, curr
     headers: headers()
   });
 
+  const body = await result.json();
+
   if (!result.ok) {
     rollbarError(`Unable to get ${walletAddress} zerion wallet chart`, undefined, {
       status: result.status,
-      body: result.body
+      body
     });
   }
 
-  return await result.json();
+  return body;
 };
 
 export const getWalletTransactions = async (
@@ -40,19 +42,20 @@ export const getWalletTransactions = async (
     headers: headers()
   });
 
+  const body = await result.json();
+
   if (!result.ok) {
     rollbarError(`Unable to get ${walletAddress} zerion transactions`, undefined, {
       status: result.status,
-      body: result.body
+      body
     });
   }
 
-  return await result.json();
+  return body;
 };
 
 const headers = () => {
   const credential = `${process.env.NEXT_ZERION_API_KEY!}:`;
-
   return {
     Accept: "application/json",
     Authorization: `Basic ${btoa(credential)}`

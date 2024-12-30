@@ -83,7 +83,7 @@ export default function WrappedScreen() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{
           duration: 0.8,
-          scale: { type: "spring", visualDuration: 0.8, bounce: 0.5 }
+          scale: { type: "spring", visualDuration: 0.8, bounce: 0.2 }
         }}
         className="flex flex-1 flex-col items-center justify-center gap-2 text-white"
       >
@@ -102,11 +102,18 @@ export default function WrappedScreen() {
         </span>
         <span className="font-semibold text-2xl uppercase">{screenData.organization.role}</span>
       </motion.div>
-      <Link href={`/wrapped/${user?.talent_id}/${screenData.wrapped?.next_page}`} className="w-full">
-        <Button variant="secondary" className="w-full">
-          Next
-        </Button>
-      </Link>
+      <div className="flex flex-col w-full gap-2">
+        <Link href={`/wrapped/${user?.talent_id}/${screenData.wrapped?.next_page}`} className="w-full">
+          <Button variant="default" className="w-full">
+            Next
+          </Button>
+        </Link>
+        <Link href={`/wrapped/${user?.talent_id}/share`} className="w-full">
+          <Button variant="secondary" className="w-full">
+            Skip to overview
+          </Button>
+        </Link>
+      </div>
     </>
   );
 }

@@ -12,14 +12,16 @@ export const refreshAuthToken = async (authToken: string) => {
     }
   });
 
+  const body = await result.json();
+
   if (!result.ok) {
     rollbarError("Unable to refresh token from talent protocol", undefined, {
       status: result.status,
-      body: result.body
+      body
     });
   }
 
-  return await result.json();
+  return body;
 };
 
 export const getTalentOnchainWrapped = async (authToken: string) => {
@@ -32,12 +34,14 @@ export const getTalentOnchainWrapped = async (authToken: string) => {
     }
   });
 
+  const body = await result.json();
+
   if (!result.ok) {
     rollbarError("Unable to get wrapped from talent protocol", undefined, {
       status: result.status,
-      body: result.body
+      body
     });
   }
 
-  return await result.json();
+  return body;
 };

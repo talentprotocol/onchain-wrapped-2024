@@ -1,3 +1,5 @@
+import { rollbarError } from "../rollbar/log";
+
 const PINATA_JWT = process.env.NEXT_PINATA_JWT!;
 
 export async function pinFileWithPinata(file: File) {
@@ -34,11 +36,16 @@ export async function pinJsonWithPinata(json: object, talentId: number) {
     body: data
   });
 
+  const body = await res.json();
+
   if (!res.ok) {
-    console.error(res);
+    rollbarError("Unable to get wrapped from talent protocol", undefined, {
+      status: res.status,
+      body
+    });
   }
 
-  const result = (await res.json()) as { IpfsHash: string };
+  const result = body as { IpfsHash: string };
 
   return `ipfs://${result.IpfsHash}`;
 }
