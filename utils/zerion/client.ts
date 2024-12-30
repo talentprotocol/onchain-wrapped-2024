@@ -6,7 +6,7 @@ export const getWalletChart = async (walletAddress: string, chains: string, curr
     "filter[chain_ids]": chains
   }).toString();
 
-  const result = await fetch(`${ZERION_BASE_URL}/v1/wallets/${walletAddress}/charts/max?` + queryParams, {
+  const result = await fetch(`${ZERION_BASE_URL}/v1/wallets/${walletAddress}/charts/year?` + queryParams, {
     method: "GET",
     headers: headers()
   });
