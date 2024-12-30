@@ -13,13 +13,11 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const id = (await params).id;
   const color = (await searchParams).color ?? "talent";
 
-  const cacheTimestamp = currentTimestamp();
-
   return {
     openGraph: {
       images: [
         {
-          url: `/api/users/${id}/image?color=${color}&cache=${cacheTimestamp}`,
+          url: `/api/users/${id}/image?color=${color}&v=${currentTimestamp()}`,
           width: 1200,
           height: 630,
           alt: "Onchain Wrapped 2024",

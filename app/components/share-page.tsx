@@ -51,7 +51,7 @@ export default function SharePage() {
   };
 
   const imageUrl = useMemo(
-    () => `/api/users/${user?.talent_id}/image?color=${color}&cache=${currentTimestamp()}`,
+    () => `/api/users/${user?.talent_id}/image?color=${color}&v=${currentTimestamp()}`,
     [color, user]
   );
 
