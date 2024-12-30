@@ -10,6 +10,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const { id } = await params;
   const talentId: number = parseInt(id) || 0;
 
+  const data = await request.json();
+
   const authorization = (await headers()).get("authorization");
 
   const authToken = authorization?.replace("Bearer ", "");
@@ -26,7 +28,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   }
 
   try {
-    const zoraPostUrl = await mintOnZora(talentId);
+    const zoraPostUrl = await mintOnZora(talentId, data.color ?? "talent");
 
     return NextResponse.json({
       zoraPostUrl
