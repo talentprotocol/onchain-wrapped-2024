@@ -44,6 +44,7 @@ export default function SharePage() {
 
   const changeColor = (newColor: OrgEnum) => {
     setColor(newColor);
+    setLoadingImage(true);
     const updatedSearchParams = new URLSearchParams(currentSearchParams.toString());
     updatedSearchParams.set("color", newColor);
 
