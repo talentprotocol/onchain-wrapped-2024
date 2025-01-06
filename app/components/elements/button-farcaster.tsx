@@ -12,8 +12,9 @@ export default function ButtonFarcaster({ color }: { color: string }) {
 
   const shareOnFarcaster = useCallback(() => {
     const text = encodeURIComponent(
-      `Check out my Onchain Wrapped 2024 by Talent Protocol! @talentmate.eth \n${process.env
-        .NEXT_PUBLIC_APP_URL!}/wrapped/${user?.talent_id}/share?color=${color}`
+      `Check out my Onchain Wrapped 2024 by Talent Protocol! \n${process.env.NEXT_PUBLIC_APP_URL!}/wrapped/${
+        user?.talent_id
+      }/share?color=${color}`
     );
     const url = encodeURIComponent(
       `${process.env.NEXT_PUBLIC_APP_URL!}/wrapped/${user?.talent_id}/share?color=${color}`
