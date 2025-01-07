@@ -142,19 +142,11 @@ export default function Page() {
     };
   }, [fetchUser, isPageVisible, isPollingEnabled, router, talentId]);
 
-  const redirectToTalentProtocolIntegrations = () => {
+  const redirectToTalentProtocolAccounts = () => {
     router.push(
-      `${process.env.NEXT_PUBLIC_TALENT_PROTOCOL_PASSPORT_URL}/settings/integrations?auth_token=${localStorage.getItem(
-        "auth_token"
-      )}`
-    );
-  };
-
-  const redirectToTalentProtocolWallets = () => {
-    router.push(
-      `${process.env.NEXT_PUBLIC_TALENT_PROTOCOL_PASSPORT_URL}/settings/wallets?auth_token=${localStorage.getItem(
-        "auth_token"
-      )}`
+      `${
+        process.env.NEXT_PUBLIC_TALENT_PROTOCOL_PASSPORT_URL
+      }/settings/connected_accounts?auth_token=${localStorage.getItem("auth_token")}`
     );
   };
 
@@ -200,17 +192,10 @@ export default function Page() {
         <div className="flex flex-col sm:flex-row gap-2">
           <Button
             variant="secondary"
-            onClick={redirectToTalentProtocolIntegrations}
+            onClick={redirectToTalentProtocolAccounts}
             className="w-full flex items-center gap-2"
           >
-            <span>Connect more socials</span>
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={redirectToTalentProtocolWallets}
-            className="w-full flex items-center gap-2"
-          >
-            <span>Add more wallets</span>
+            <span>Connect more accounts</span>
           </Button>
         </div>
       </div>
